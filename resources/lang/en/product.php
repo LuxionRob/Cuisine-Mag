@@ -7,6 +7,7 @@ return [
         'food' => 'Food',
         'drink' => 'Drink',
         'title' => 'Product List',
+        'find' => 'Find product here', 
     ],
 
     'show' => [

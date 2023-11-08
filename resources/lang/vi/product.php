@@ -8,6 +8,7 @@ return [
         'category' => "Loại",
         'food' => 'Đồ ăn',
         'drink' => 'Đồ uống',
+        'find' => 'Tìm kiếm', 
     ],
 
     'show' => [
