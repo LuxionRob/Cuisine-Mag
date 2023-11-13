@@ -64,7 +64,7 @@
 
                         <x-slot name="content">
                             <x-dropdown-link :href="route('users.show', Auth::id())">
-                                Profile
+                                {{ __('Profile') }}
                             </x-dropdown-link>
 
                             <!-- Authentication -->
@@ -82,9 +82,9 @@
                 </div>
             @else
                 <div class="flex items-center">
-                    <a href="{{ route('login') }}" class="text-sm text-gray-700 underline dark:text-gray-500">Log in</a>
+                    <a href="{{ route('login') }}" class="text-sm text-gray-700 underline dark:text-gray-500">{{ __(('Log in')) }}</a>
                     <a href="{{ route('register') }}"
-                        class="ml-4 text-sm text-gray-700 underline dark:text-gray-500">Register</a>
+                        class="ml-4 text-sm text-gray-700 underline dark:text-gray-500">{{ __(('Register')) }}</a>
                 </div>
             @endauth
         </div>

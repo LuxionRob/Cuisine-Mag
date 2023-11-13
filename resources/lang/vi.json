@@ -7,8 +7,16 @@
     "Delete": "Xóa",
     "Edit": "Sửa",
     "currency": "VND",
-    "Login": "Đăng nhập",
+
+    "Username": "Tên người dùng",
+    "Email": "Email",
+    "Password": "Mật khẩu",
+    "Confirm Password": "Xác nhận lại mật khẩu",
+    "Already registered?": "Đã có tài khoản?",
+
+    "Log in": "Đăng nhập",
     "Register": "Đăng ký",
+
     "Dashboard": "Bảng điều khiển",
     "Products": "Sản phẩm",
     "Users": "Người dùng",
@@ -20,5 +28,7 @@
 
     "results": "kết quả",
     "Vietnamese": "Tiếng Việt",
-    "English": "Tiếng Anh"
+    "English": "Tiếng Anh",
+    "Profile": "Hồ sơ",
+    "Log Out": "Đăng xuất"
 }
