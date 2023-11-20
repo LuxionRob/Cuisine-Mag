@@ -17,6 +17,7 @@ class Product extends Model
         'number_in_stock',
         'number_of_purchases',
         'rate_point',
+        'store_id'
     ];
 
     public function user()
@@ -42,5 +43,9 @@ class Product extends Model
     public function productReviews()
     {
         return $this->hasMany(ProductReview::class);
+    }
+    public function store()
+    {
+        return $this->belongsTo(Store::class);
     }
 }
