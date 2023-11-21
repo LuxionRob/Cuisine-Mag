@@ -19,7 +19,9 @@
     .button.disabled {
         @apply pointer-events-none bg-opacity-50;
     }
-
+    .button.no-outline {
+        @apply cursor-pointer bg-transparent text-gray-500 hover:bg-gray-100;
+    }
     .after.down-arrow {
         @apply after:absolute after:right-0 after:top-1/2 after:block after:h-0 after:w-0 after:-translate-y-1/2 after:border-x-8 after:border-t-8 after:border-white after:border-t-slate-300 after:bg-slate-400;
     }

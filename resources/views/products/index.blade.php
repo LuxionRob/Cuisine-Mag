@@ -13,12 +13,12 @@
                     <form action="{{ route('products.search') }}" method="GET">
                         <input type="text" class="form-control"
                             placeholder="{{ __('product.index.find') }}" name="search"
-                            value="{{ old('search') }}">
+                            value="{{ app('request')->input('search') }}">
                         <select data-filter="make" name="category"
-                            class="filter-make form-control filter">
-                            <option value="0">{{ __('product.index.category') }}</option>
-                            <option value="1">{{ __('product.index.food') }}</option>
-                            <option value="2">{{ __('product.index.drink') }}</option>
+                            class="filter-make form-control filter"">
+                            <option value="0" @if ( app('request')->input('category') == 0) selected @endif>{{ __('product.index.category') }}</option>
+                            <option value="1" @if ( app('request')->input('category') == 1) selected @endif>{{ __('product.index.food') }}</option>
+                            <option value="2" @if ( app('request')->input('category') == 2) selected @endif>{{ __('product.index.drink') }}</option>
                         </select>
                         <button class="w-1/6 rounded bg-blue-500 p-2 text-white"
                             type="submit">Tìm</button>
@@ -71,7 +71,7 @@
 
                                 <div class="flex justify-between">
                                     <div class="mb-4 px-6 text-xl font-bold text-red-600">
-                                        {{ $product->price }} $</div>
+                                        {{ formatCurrency($product->price, Session::get('locale')) }}</div>
                                     <button class="mb-4 px-6" type="submit">
                                         <i class="fa fa-cart-plus"></i>
                                     </button>
