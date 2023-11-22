@@ -2,14 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Enums\UserRole;
+use App\Models\Contact;
 use App\Models\Location;
 use App\Models\Store;
-use App\Models\User;
 use Illuminate\Database\Seeder;
-use Nette\Schema\Schema;
 
-class StoreSeeder extends Seeder
+class ContactSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -20,10 +18,11 @@ class StoreSeeder extends Seeder
     {
         $locationIds = Location::pluck('id');
         foreach ($locationIds as $locationId) {
-            Store::create([
-                'name' => 'Store - Location ' . $locationId,
+            Contact::create([
+                'name' => 'Contact' . $locationId,
+                'phone_number' => '0321515461' . $locationId,
+                'user_id' => rand(2, 11),
                 'location_id' => $locationId,
-                'owner_id' => $locationId + 5,
             ]);
         }
     }

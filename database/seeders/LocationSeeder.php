@@ -14,7 +14,7 @@ class LocationSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 0; $i < 5; ++$i) {
+        for ($i = 0; $i < 10; ++$i) {
             Location::create([
                 'x' => rand(-10, 10),
                 'y' => rand(-10, 10),

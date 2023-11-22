@@ -14,6 +14,7 @@ class AddStoreIdColumnProductsTable extends Migration
     public function up()
     {
         Schema::table('products', function (Blueprint $table) {
+            $table->dropColumn("salesman_id");
             $table->unsignedBigInteger('store_id')->after('number_in_stock');
             $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');
         });

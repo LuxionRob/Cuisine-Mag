@@ -19,12 +19,6 @@ class Product extends Model
         'rate_point',
         'store_id'
     ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'salesman_id');
-    }
-
     public function cartItems()
     {
         return $this->hasMany(CartItem::class);
@@ -44,6 +38,7 @@ class Product extends Model
     {
         return $this->hasMany(ProductReview::class);
     }
+
     public function store()
     {
         return $this->belongsTo(Store::class);
