@@ -71,7 +71,7 @@
 
                                 <div class="flex justify-between">
                                     <div class="mb-4 px-6 text-xl font-bold text-red-600">
-                                        {{ formatCurrency($product->price, Session::get('locale')) }}</div>
+                                        {{ formatCurrency($product->price }}</div>
                                     <button class="mb-4 px-6" type="submit">
                                         <i class="fa fa-cart-plus"></i>
                                     </button>
