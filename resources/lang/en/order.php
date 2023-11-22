@@ -4,6 +4,7 @@ return [
     'Quantity' => 'Quantity',
     'Total' => 'Total (:totalQuantity products)',
     'Payment Method' => 'Payment Method',
+    'Price' => 'Price',
     'id' => '#',
     'empty' => 'Order list is empty',
     'validation' => [

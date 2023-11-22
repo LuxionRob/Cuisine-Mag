@@ -1,7 +1,7 @@
 <?php
 
 if (!function_exists('formatCurrency')) {
-    function formatCurrency($amount, $type)
+    function formatCurrency($amount)
     {
         if (!isset($type)) {
             $type = App::getLocale();
