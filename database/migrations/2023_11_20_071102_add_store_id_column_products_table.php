@@ -30,6 +30,7 @@ class AddStoreIdColumnProductsTable extends Migration
         Schema::table('products', function (Blueprint $table) {
             $table->dropForeign('products_store_id_foreign');
             $table->dropColumn('store_id');
+            $table->unsignedBigInteger("salesman_id");
         });
     }
 }

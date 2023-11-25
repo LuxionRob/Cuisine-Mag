@@ -32,6 +32,5 @@ class AddLocationIdContactsTable extends Migration
             $table->dropColumn('location_id');
             $table->string('address');
         });
-        Schema::dropIfExists('contacts');
     }
 }

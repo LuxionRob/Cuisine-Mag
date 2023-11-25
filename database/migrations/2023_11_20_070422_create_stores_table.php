@@ -37,6 +37,6 @@ class CreateStoresTable extends Migration
             $table->dropColumn('owner_id');
             $table->dropColumn('location_id');
         });
-        Schema::dropIfExists('stories');
+        Schema::dropIfExists('stores');
     }
 }
