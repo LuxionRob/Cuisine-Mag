@@ -22,7 +22,7 @@ class StoreSeeder extends Seeder
             Store::create([
                 'name' => 'Store - Location ' . $i,
                 'location_id' => $i,
-                'owner_id' => $i + 5,
+                'owner_id' => $i + 6,
             ]);
         }
     }
