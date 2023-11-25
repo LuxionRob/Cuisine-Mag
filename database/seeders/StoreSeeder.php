@@ -18,12 +18,11 @@ class StoreSeeder extends Seeder
      */
     public function run()
     {
-        $locationIds = Location::pluck('id');
-        foreach ($locationIds as $locationId) {
+        for ($i = 1; $i <= 10; ++$i) {
             Store::create([
-                'name' => 'Store - Location ' . $locationId,
-                'location_id' => $locationId,
-                'owner_id' => $locationId + 5,
+                'name' => 'Store - Location ' . $i,
+                'location_id' => $i,
+                'owner_id' => $i + 5,
             ]);
         }
     }

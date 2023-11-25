@@ -16,13 +16,12 @@ class ContactSeeder extends Seeder
      */
     public function run()
     {
-        $locationIds = Location::pluck('id');
-        foreach ($locationIds as $locationId) {
+        for ($i = 11; $i <= 20; ++$i) {
             Contact::create([
-                'name' => 'Contact' . $locationId,
-                'phone_number' => '0321515461' . $locationId,
+                'name' => 'Contact' . $i,
+                'phone_number' => '0321515461' . $i,
                 'user_id' => rand(2, 11),
-                'location_id' => $locationId,
+                'location_id' => $i,
             ]);
         }
     }

@@ -16,7 +16,7 @@ class ContactFactory extends Factory
         return [
             'name' => $this->faker->name,
             'phone_number' => $this->faker->phoneNumber,
-            'location_id' => $this->faker->address,
+            'location_id' => $this->faker->locationId,
             'user_id' => $this->faker->numberBetween(2, 11),
         ];
     }

@@ -15,7 +15,7 @@ class AddLocationIdContactsTable extends Migration
     {
         Schema::table('contacts', function (Blueprint $table) {
             $table->dropColumn('address');
-            $table->unsignedBigInteger('location_id')->default(1);
+            $table->unsignedBigInteger('location_id');
             $table->foreign('location_id')->references('id')->on('locations')->onDelete('cascade');
         });
     }
@@ -30,6 +30,7 @@ class AddLocationIdContactsTable extends Migration
         Schema::table('contacts', function (Blueprint $table) {
             $table->dropForeign('contacts_location_id_foreign');
             $table->dropColumn('location_id');
+            $table->string('address');
         });
         Schema::dropIfExists('contacts');
     }
