@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
             ]);
         }
 
-        for ($i = 0; $i < 5; ++$i) {
+        for ($i = 0; $i < 10; ++$i) {
             User::create([
                 'username' => 'salesman' . $i . '-account',
                 'first_name' => 'salesman' . $i,

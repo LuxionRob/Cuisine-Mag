@@ -21,10 +21,12 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             UserSeeder::class,
             CategorySeeder::class,
+            LocationSeeder::class,
+            StoreSeeder::class,
+            ContactSeeder::class,
         ]);
 
         Product::factory(10)->create();
-        Contact::factory(10)->create();
 
         $this->call([
             CategoryProductSeeder::class,
