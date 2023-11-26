@@ -19,11 +19,13 @@ class ProductController extends Controller
      *
      * @return Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $page = $request->input('page');
+
         $products = DB::table('products')->where('number_in_stock', '>', '-1')
             ->orderBy('id', 'desc')
-            ->paginate(config('app.pagination.per_page'));
+            ->paginate(config('app.pagination.per_page'), ['*'], 'page', $page ?? 1);
 
         return view('products.index', compact('products'));
     }
@@ -40,8 +42,9 @@ class ProductController extends Controller
 
     public function search(Request $request)
     {
-        $searchTerm = $request->search;
-        $categoryId = $request->category ?? 0;
+        $searchTerm = $request->input('search');
+        $categoryId = $request->input('category') ?? 0;
+        $page = $request->input('page');
 
         $query = Product::with('categories')
             ->where('number_in_stock', '>', '-1')
@@ -54,9 +57,9 @@ class ProductController extends Controller
         }
 
         $products = $query->orderBy('id', 'desc')
-            ->paginate(config('app.pagination.per_page'));
+            ->paginate(config('app.pagination.per_page'), ['*'], 'page', $page ?? 1);
 
-        return view('products.index', compact('products'));
+        return view('products.index')->with(compact('products'))->with(compact('request'));
     }
 
     /**

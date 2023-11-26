@@ -22,8 +22,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('language/{locale}', [LangController::class, "changeLang"])->name('changeLanguage');
 
 Route::get('/', [ProductController::class, 'index']);
+Route::get('/products/search', [ProductController::class, 'search'])->name('products.search');
 Route::resource('/products', ProductController::class);
-Route::post('/products/search', [ProductController::class, 'search'])->name('products.search');
 
 Route::resource('/users', UserController::class)->middleware(['auth', 'verified']);
 Route::get('/users/{user}/products', [UserController::class, 'showUserProducts'])

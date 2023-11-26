@@ -6,8 +6,20 @@
     "Delete": "Delete",
     "Edit": "Edit",
     "currency": "USD",
-    "Login": "Log in",
+
+    "Username": "Username",
+    "Email": "Email",
+    "Password": "Password",
+    "Confirm Password": "Confirm Password",
+    "Already Registered?": "Already Registered?",
+    "Remember me": "Remember me",
+    "Forgot your password?": "Forgot your password?",
+
+    "Log in": "Log in",
     "Register": "Register",
+    "Profile": "Profile",
+    "Log Out": "Log Out",
+
     "Dashboard": "Dashboard",
     "Products": "Products",
     "Users": "Users",
