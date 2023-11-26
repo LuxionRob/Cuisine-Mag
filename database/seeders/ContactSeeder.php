@@ -17,9 +17,8 @@ class ContactSeeder extends Seeder
     public function run()
     {
         for ($i = 11; $i <= 20; ++$i) {
-            Contact::create([
+            Contact::factory()->create([
                 'name' => 'Contact' . $i,
-                'phone_number' => '0321515461' . $i,
                 'user_id' => rand(2, 11),
                 'location_id' => $i,
             ]);
