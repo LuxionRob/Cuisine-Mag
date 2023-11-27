@@ -11,17 +11,17 @@
             <div class="w-full">
                 <div class="mx-auto mb-4 w-1/2">
                     <form action="{{ route('products.search') }}" method="GET">
-                        <input type="text" class="form-control"
-                            placeholder="{{ __('product.index.find') }}" name="search"
-                            value="{{ app('request')->input('search') }}">
-                        <select data-filter="make" name="category"
-                            class="filter-make form-control filter"">
-                            <option value="0" @if ( app('request')->input('category') == 0) selected @endif>{{ __('product.index.category') }}</option>
-                            <option value="1" @if ( app('request')->input('category') == 1) selected @endif>{{ __('product.index.food') }}</option>
-                            <option value="2" @if ( app('request')->input('category') == 2) selected @endif>{{ __('product.index.drink') }}</option>
+                        <input type="text" class="form-control" placeholder="{{ __('product.index.find') }}"
+                            name="search" value="{{ app('request')->input('search') }}">
+                        <select data-filter="make" name="category" class="filter-make form-control filter"">
+                            <option value="0" @if (app('request')->input('category') == 0) selected @endif>
+                                {{ __('product.index.category') }}</option>
+                            <option value="1" @if (app('request')->input('category') == 1) selected @endif>
+                                {{ __('product.index.food') }}</option>
+                            <option value="2" @if (app('request')->input('category') == 2) selected @endif>
+                                {{ __('product.index.drink') }}</option>
                         </select>
-                        <button class="w-1/6 rounded bg-blue-500 p-2 text-white"
-                            type="submit">Tìm</button>
+                        <button class="w-1/6 rounded bg-blue-500 p-2 text-white" type="submit">Tìm</button>
                     </form>
                 </div>
 
@@ -30,22 +30,18 @@
                         <form action="{{ route('cart.store') }}" method="POST">
                             @csrf
 
-                            <div
-                                class="flex h-full w-full flex-col justify-between bg-white shadow-lg">
+                            <div class="flex h-full w-full flex-col justify-between bg-white shadow-lg">
                                 <a href="{{ route('products.show', ['product' => $product->id]) }}">
                                     <div class="flex justify-center">
                                         <div class="h-full w-full overflow-hidden rounded">
                                             @if (strpos($product->photo, 'https://via.placeholder.com/') === 0)
-                                                <img class="h-56 w-full" src="{{ $product->photo }}"
-                                                    alt="Card image">
+                                                <img class="h-56 w-full" src="{{ $product->photo }}" alt="Card image">
                                             @else
-                                                <img class="h-56 w-full"
-                                                    src="{{ asset($product->photo) }}"
+                                                <img class="h-56 w-full" src="{{ asset($product->photo) }}"
                                                     alt="Card image">
                                             @endif
                                             <div class="px-6 py-4">
-                                                <input type="hidden" name="id"
-                                                    value="{{ $product->id }}" />
+                                                <input type="hidden" name="id" value="{{ $product->id }}" />
                                                 <div class="flex items-center justify-between">
                                                     <div class="mb-4 text-xl font-bold">
                                                         @php
@@ -53,8 +49,7 @@
                                                         @endphp
                                                         {{ $limitedName }}
                                                     </div>
-                                                    <div
-                                                        class="mb-4 text-sm font-bold text-gray-400">
+                                                    <div class="mb-4 text-sm font-bold text-gray-400">
                                                         {{ __('product.index.sold') }}{{ $product->number_of_purchase }}
                                                     </div>
                                                 </div>
@@ -71,7 +66,7 @@
 
                                 <div class="flex justify-between">
                                     <div class="mb-4 px-6 text-xl font-bold text-red-600">
-                                        {{ formatCurrency($product->price }}</div>
+                                        {{ formatCurrency($product->price) }}</div>
                                     <button class="mb-4 px-6" type="submit">
                                         <i class="fa fa-cart-plus"></i>
                                     </button>
@@ -90,4 +85,3 @@
         </div>
     </div>
 </x-app-layout>
-

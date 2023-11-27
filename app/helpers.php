@@ -1,11 +1,9 @@
 <?php
 
 if (!function_exists('formatCurrency')) {
-    function formatCurrency($amount, $type)
+    function formatCurrency($amount)
     {
-        if (!isset($type)) {
-            $type = App::getLocale();
-        }
+        $type = App::getLocale();
         switch ($type) {
             case 'vi':
                 return number_format($amount * 23000, 0, ',', '.') . '₫';
