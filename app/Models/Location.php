@@ -17,11 +17,11 @@ class Location extends Model
 
     public function contact()
     {
-        return $this->belongsTo(Order::class);
+        return $this->belongsTo(Contact::class);
     }
 
     public function store()
     {
-        return $this->belongsTo(store::class);
+        return $this->belongsTo(Store::class);
     }
 }

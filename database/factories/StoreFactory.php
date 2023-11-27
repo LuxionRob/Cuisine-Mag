@@ -3,10 +3,9 @@
 namespace Database\Factories;
 
 use App\Models\Location;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ContactFactory extends Factory
+class StoreFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -16,10 +15,9 @@ class ContactFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->name,
-            'phone_number' => $this->faker->phoneNumber,
-            'user_id' => User::all()->random()->id,
+            'name' => 'Store - Location ' . $this->faker->randomAscii(),
             'location_id' => Location::factory()->create(),
+            // 'owner_id' => User::where('role', UserRole::ROLE_SALESMAN)->get()->random()->id,
         ];
     }
 }
