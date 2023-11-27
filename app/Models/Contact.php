@@ -29,6 +29,6 @@ class Contact extends Model
 
     public function location()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Location::class);
     }
 }

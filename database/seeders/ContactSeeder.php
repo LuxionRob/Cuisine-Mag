@@ -3,8 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Contact;
-use App\Models\Location;
-use App\Models\Store;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class ContactSeeder extends Seeder
@@ -16,12 +15,7 @@ class ContactSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 11; $i <= 20; ++$i) {
-            Contact::factory()->create([
-                'name' => 'Contact' . $i,
-                'user_id' => rand(2, 11),
-                'location_id' => $i,
-            ]);
-        }
+        $user = User::all();
+        Contact::factory()->hasLocation(1)->count(20)->create();
     }
 }

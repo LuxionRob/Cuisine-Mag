@@ -3,8 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\CartItem;
-use App\Models\Contact;
-use App\Models\Product;
 use App\Models\ProductReview;
 use Illuminate\Database\Seeder;
 
@@ -21,17 +19,10 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             UserSeeder::class,
             CategorySeeder::class,
-            LocationSeeder::class,
-            StoreSeeder::class,
             ContactSeeder::class,
-        ]);
-
-        Product::factory(10)->create();
-
-        $this->call([
+            StoreSeeder::class,
             CategoryProductSeeder::class,
             OrderSeeder::class,
-            OrderItemSeeder::class,
         ]);
 
         CartItem::factory(10)->create();

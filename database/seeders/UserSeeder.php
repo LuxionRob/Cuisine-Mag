@@ -16,20 +16,6 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 0; $i < 5; ++$i) {
-            User::create([
-                'username' => 'user' . $i . '-account',
-                'first_name' => 'user' . $i,
-                'last_name' => 'account',
-                'email' => 'user' . $i . '@gmail.com',
-                'password' => bcrypt('12345678'),
-                'is_active' => true,
-                'role' => UserRole::ROLE_USER,
-                'email_verified_at' => now(),
-                'remember_token' => Str::random(10),
-            ]);
-        }
-
         for ($i = 0; $i < 10; ++$i) {
             User::create([
                 'username' => 'salesman' . $i . '-account',
@@ -39,6 +25,20 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'is_active' => true,
                 'role' => UserRole::ROLE_SALESMAN,
+                'email_verified_at' => now(),
+                'remember_token' => Str::random(10),
+            ]);
+        }
+
+        for ($i = 0; $i < 5; ++$i) {
+            User::create([
+                'username' => 'user' . $i . '-account',
+                'first_name' => 'user' . $i,
+                'last_name' => 'account',
+                'email' => 'user' . $i . '@gmail.com',
+                'password' => bcrypt('12345678'),
+                'is_active' => true,
+                'role' => UserRole::ROLE_USER,
                 'email_verified_at' => now(),
                 'remember_token' => Str::random(10),
             ]);
