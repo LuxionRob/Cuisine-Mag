@@ -5,16 +5,18 @@ namespace App\Http\Controllers\Salesman;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Authorized\Order\AuthorizedOrderRequest;
 use App\Models\Order;
+use App\Models\Store;
 use Illuminate\Support\Facades\Auth;
 
 class SalesmanOrderController extends Controller
 {
     public function index()
     {
-        $user = Auth::user();
-        $user->load('products.orderItems.order');
+        $store = Store::where('owner_id', Auth::id())->first();
+        $store->load('products.orderItems.order');
 
-        $uniqueOrderItemByProduct = $user->products->map(function ($product) {
+
+        $uniqueOrderItemByProduct = $store->products->map(function ($product) {
             return $product->orderItems->unique('order_id')->all();
         });
 

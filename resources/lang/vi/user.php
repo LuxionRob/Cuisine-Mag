@@ -35,6 +35,7 @@ return [
     ],
     'products' => [
         'button' => 'Tạo sản phẩm mới',
+        'Product inventory' => 'Danh mục sản phẩm',
         'table' => [
             'id' => '#',
             'name' => 'Tên sản phẩm',

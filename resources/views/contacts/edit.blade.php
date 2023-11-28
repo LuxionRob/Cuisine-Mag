@@ -14,7 +14,7 @@
 
                     <label for="address" class="block mb-2 mt-4">{{ __('contact.Address') }}:</label>
                     <input type="text" id="address" name="address" class="w-full p-2 border rounded-md"
-                        value="{{ $contact->address }}" required>
+                        value="{{ $contact->location->detail }}" required>
 
                     <label for="phone_number" class="block mb-2 mt-4">{{ __('contact.Phone number') }}:</label>
                     <input type="text" id="phone_number" name="phone_number" class="w-full p-2 border rounded-md"

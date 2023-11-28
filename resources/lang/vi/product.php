@@ -4,13 +4,14 @@ return [
     'index' => [
         'sold' => 'Đã bán: ',
         'title' => 'Danh sách sản phẩm',
-        'sold'=> 'Đã bán: ',
         'category' => "Loại",
         'food' => 'Đồ ăn',
         'drink' => 'Đồ uống',
-        'find' => 'Tìm kiếm', 
+        'find' => 'Tìm kiếm',
     ],
-
+    'store' => [
+        'success' => 'Product stored successfully!'
+    ],
     'show' => [
         'ratePoint' => 'Điểm đánh giá ',
         'comment' => ' Bình luận',
@@ -24,7 +25,12 @@ return [
         'qualityRating' => 'Đánh giá chất lượng: ',
         'message' => 'Nhà hàng không còn sản phẩm nào khác',
     ],
-
+    'update' => [
+        'success' => 'Cập nhật sản phẩm thành công!'
+    ],
+    'destroy' => [
+        'success' => 'Xóa sản phẩm thành công!'
+    ],
     'edit' => [
         'name' => 'Tên sản phẩm',
         'description' => 'Mô tả',

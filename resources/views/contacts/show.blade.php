@@ -5,7 +5,7 @@
         <div class="py-8">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 bg-white shadow-sm sm:rounded-lg p-6">
                 <h2 class="text-lg font-semibold mb-2">{{ $contact->name }}</h2>
-                <p class="text-gray-600 mb-2">{{ __('contact.Address') }}: {{ $contact->address }}</p>
+                <p class="text-gray-600 mb-2">{{ __('contact.Address') }}: {{ $contact->location->detail }}</p>
                 <p class="text-gray-600 mb-2">{{ __('contact.Phone number') }}: {{ $contact->phone_number }}</p>
                 <div class="w-full mx-auto border-b-[1px] border-gray-200 my-4"></div>
                 <div class="flex space-x-4 justify-end">
