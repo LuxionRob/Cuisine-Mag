@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserRole;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\DeleteUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
@@ -26,17 +27,20 @@ class UserController extends Controller
         return view('users.index')->with('users', $users);
     }
 
-    public function showUserProducts(User $user)
+    public function showUserProducts(User $user, Request $request)
     {
-        if ($user->role === 'ADMIN') {
+        $page = $request->input('page');
+
+        if ($user->role === UserRole::ROLE_ADMIN) {
             $products = DB::table('products')->where('number_in_stock', '>', '-1')
                 ->orderBy('id', 'desc')
                 ->paginate(config('app.pagination.per_page'));
-        } else {
-            $products = DB::table('products')->where('salesman_id', $user->id)
+        } else if ($user->role === UserRole::ROLE_SALESMAN) {
+            $storeId = $user->store->id;
+            $products = DB::table('products')
+                ->where('store_id', '=', $storeId)
                 ->where('number_in_stock', '>', '-1')
-                ->orderBy('id', 'desc')
-                ->paginate(config('app.pagination.per_page'));
+                ->orderBy('id')->paginate(self::DEFAULT_LIMIT);
         }
 
         return view('users.products')->with('products', $products);

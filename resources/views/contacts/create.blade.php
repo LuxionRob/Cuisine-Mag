@@ -11,6 +11,7 @@
                 <x-input type="text" id="address" name="address" class="w-full p-2 border rounded-md" />
                 <x-label for="phone_number">{{ __('contact.Phone number') }}</x-label>
                 <x-input type="number" id="phone_number" name="phone_number" class="w-full p-2 border rounded-md" />
+                <div id="map-determination"></div>
                 <button type="submit" class="mt-4 button primary mr-4">
                     {{ __('contact.create.button') }}
                 </button>

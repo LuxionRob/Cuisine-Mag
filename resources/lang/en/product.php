@@ -7,9 +7,11 @@ return [
         'food' => 'Food',
         'drink' => 'Drink',
         'title' => 'Product List',
-        'find' => 'Find product here', 
+        'find' => 'Find product here',
     ],
-
+    'store' => [
+        'success' => 'Product stored successfully!'
+    ],
     'show' => [
         'ratePoint' => 'Rate point: ',
         'comment' => ' Comment',
@@ -23,7 +25,12 @@ return [
         'qualityRating' => 'Quality rating: ',
         'message' => 'The restaurant has no other products',
     ],
-
+    'destroy' => [
+        'success' => 'Product removed successfully'
+    ],
+    'update' => [
+        'success' => 'Product updated successfully'
+    ],
     'edit' => [
         'name' => 'Name',
         'description' => 'Description',

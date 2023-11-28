@@ -33,7 +33,8 @@
                     @endif
                     <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 bg-white shadow-sm sm:rounded-lg p-6">
                         <h2 class="text-lg font-semibold mb-2">{{ $order->contact->name }}</h2>
-                        <p class="text-gray-600 mb-2">{{ __('contact.Address') }}: {{ $order->contact->address }}
+                        <p class="text-gray-600 mb-2">{{ __('contact.Address') }}:
+                            {{ $order->contact->location->detail }}
                         </p>
                         <p class="text-gray-600 mb-2">{{ __('contact.Phone number') }}:
                             {{ $order->contact->phone_number }}
@@ -46,10 +47,10 @@
                             <div class="w-1/6 mr-4">
                                 @if (strpos($orderItem->product->photo, 'https://via.placeholder.com/') === 0)
                                     <img class="object-cover" src="{{ $orderItem->product->photo }}"
-                                         alt="{{ $orderItem->product->name }}">
+                                        alt="{{ $orderItem->product->name }}">
                                 @else
                                     <img class="object-cover" src="{{ asset($orderItem->product->photo) }}"
-                                         alt="{{ $orderItem->product->name }}">
+                                        alt="{{ $orderItem->product->name }}">
                                 @endif
                             </div>
                             <div class="grow">

@@ -10,7 +10,8 @@
                 </div>
                 <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 bg-white shadow-sm sm:rounded-lg p-6">
                     <h2 class="text-lg font-semibold mb-2">{{ $order->contact->name }}</h2>
-                    <p class="text-gray-600 mb-2">{{ __('contact.Address') }}: {{ $order->contact->address }}</p>
+                    <p class="text-gray-600 mb-2">{{ __('contact.Address') }}: {{ $order->contact->location->detail }}
+                    </p>
                     <p class="text-gray-600 mb-2">{{ __('contact.Phone number') }}: {{ $order->contact->phone_number }}
                     </p>
                 </div>

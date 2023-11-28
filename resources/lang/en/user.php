@@ -35,6 +35,7 @@ return [
     ],
     'products' => [
         'button' => 'Create A Product',
+        'Product inventory' => 'Product inventory',
         'table' => [
             'id' => '#',
             'name' => 'Name',

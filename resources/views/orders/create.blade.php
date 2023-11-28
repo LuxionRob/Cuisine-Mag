@@ -45,21 +45,20 @@
                     <div class="ml-8 rounded-md mb-4 w-1/3 flex-nowrap">
                         <div class="py-4 px-8 bg-white">
                             @if ($user->contacts->count() > 0)
-                                <h3 class="font-extrabold">{{ __('Contact') }}</h3>
+                                <h3 class="font-extrabold">{{ __('Contacts') }} </h3>
                                 <input id="contact-input" type="hidden" name="contact_id"
                                     value="{{ $user->contacts[0]->id }}">
-                                <div class="relative select h-28 w-full mt-1" name="contact"
-                                    value="{{ $user->contacts[0]->id }}">
+                                <div class="relative select h-28 w-full mt-1">
                                     <ul class="absolute z-10 cursor-pointer rounded-md">
                                         <li class="relative trigger p-2 pr-4 after down-arrow">
-                                            <ul class="list-inside list-disc">
+                                            <ul class="list-outside list-disc">
                                                 <li>
                                                     <strong>{{ __('contact.Name') }}</strong>:
                                                     {{ $user->contacts[0]->name }}
                                                 </li>
                                                 <li>
                                                     <strong>{{ __('contact.Address') }}</strong>:
-                                                    {{ $user->contacts[0]->address }}
+                                                    {{ $user->contacts[0]->location->detail }}
                                                 </li>
                                                 <li>
                                                     <strong>{{ __('contact.Phone number') }}</strong>:
@@ -69,7 +68,7 @@
                                         </li>
                                         <div class="bg-white shadow-md">
                                             @foreach ($user->contacts as $contact)
-                                                <li class="option hidden cursor-pointer hover:bg-slate-300 p-2"
+                                                <li class="option hidden cursor-pointer hover:bg-slate-300 p-2 shadow-sm rounded"
                                                     value="{{ $contact->id }}">
                                                     <ul class="list-inside list-disc">
                                                         <li>
@@ -78,7 +77,7 @@
                                                         </li>
                                                         <li>
                                                             <strong>{{ __('contact.Address') }}</strong>:
-                                                            {{ $contact->address }}
+                                                            {{ $contact->location->detail }}
                                                         </li>
                                                         <li>
                                                             <strong>{{ __('contact.Phone number') }}</strong>:

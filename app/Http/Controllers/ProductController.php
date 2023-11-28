@@ -77,13 +77,13 @@ class ProductController extends Controller
         $product->description = $validated['description'];
         $product->price = $validated['price'];
         $product->number_in_stock = $validated['number_in_stock'];
-        $product->salesman_id = Auth::user()->id;
+        $product->store_id = Auth::user()->store->id;
         $product->number_of_purchase = 0;
         $product->number_of_rate = 0;
         $product->rate = 0;
 
         if ($request->hasFile('photo')) {
-            $image = $request -> file('photo');
+            $image = $request->file('photo');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('images'), $imageName);
             $imagePath = env('IMAGE_PATH');
@@ -94,12 +94,7 @@ class ProductController extends Controller
 
         $product->categories()->attach($request->category);
 
-        $products = DB::table('products')->where('salesman_id', $product->salesman_id)
-            ->where('number_in_stock', '>', '-1')
-            ->orderBy('id', 'desc')
-            ->paginate(config('app.pagination.per_page'));
-
-        return view('users.products')->with('products', $products);
+        return redirect()->route('user.products', Auth::id())->with('success', trans('product.store.success'));
     }
 
     /**
@@ -117,7 +112,7 @@ class ProductController extends Controller
         $product->review = $count;
         $reviews = ProductReview::with('user')->where('product_id', $product->id)->get();
         $sameUserProducts = DB::table('products')
-            ->where('salesman_id', $product->salesman_id)
+            ->where('store_id', $product->store_id)
             ->where('number_in_stock', '>', '-1')
             ->where('id', '<>', $product->id)
             ->get();
@@ -155,7 +150,7 @@ class ProductController extends Controller
         $product->number_in_stock = $validated['number_in_stock'];
 
         if ($request->hasFile('photo')) {
-            $image = $request -> file('photo');
+            $image = $request->file('photo');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('images'), $imageName);
 
@@ -170,12 +165,8 @@ class ProductController extends Controller
         }
 
         $product->save();
-        $products = DB::table('products')->where('salesman_id', $product->salesman_id)
-            ->where('number_in_stock', '>', '-1')
-            ->orderBy('id', 'desc')
-            ->paginate(config('app.pagination.per_page'));
 
-        return view('users.products')->with('products', $products);
+        return redirect()->route('user.products', Auth::id())->with('success', trans('product.update.success'));
     }
 
     /**
@@ -189,17 +180,12 @@ class ProductController extends Controller
         DB::transaction(function () use ($product) {
             $product->number_in_stock = -1;
             $product->load('categories');
-            $product->categories()->delete();
+            $product->categories()->detach();
             $product->load('cartItems');
             $product->cartItems()->delete();
             $product->save();
         });
 
-        $products = DB::table('products')->where('salesman_id', $product->salesman_id)
-            ->where('number_in_stock', '>', '-1')
-            ->orderBy('id', 'desc')
-            ->paginate(config('app.pagination.per_page'));
-
-        return view('users.products')->with('products', $products);
+        return redirect()->route('user.products', Auth::id())->with('success', trans('product.destroy.success'));
     }
 }
