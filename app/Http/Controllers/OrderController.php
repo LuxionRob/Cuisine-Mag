@@ -91,7 +91,7 @@ class OrderController extends Controller
             return redirect()->back()->with('fail', trans('order.store.fail'));
         }
 
-        $groupedProducts = $user->cartItems->groupBy('product.salesman_id');
+        $groupedProducts = $user->cartItems->groupBy('product.store_id');
 
         foreach ($groupedProducts as $salesmanId => $items) {
             DB::transaction(function () use ($request, $items) {
