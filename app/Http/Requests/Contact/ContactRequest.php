@@ -19,8 +19,9 @@ class ContactRequest extends FormRequest
         return [
             "name" => "required|string|max:255",
             "phone_number" => "required|string",
-            "location_id" => "required|numeric",
+            "location" => "required|string",
             "user_id" => "required|numeric",
+            "address" => "required|string",
         ];
     }
 }

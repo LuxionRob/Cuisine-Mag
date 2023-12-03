@@ -4,8 +4,9 @@ return [
     'Name' => 'Tên',
     'Phone number' => 'Số điện thoại',
     'Address' => 'Địa chỉ',
+    'location' => 'Vị trí',
     'type' => [
-        'preparing' =>  'Đang chuẩn bị',
+        'preparing' => 'Đang chuẩn bị',
         'packaging' => 'Đang đóng gói',
         'delivering' => 'Đang giao hàng',
         'delivered' => 'Đã giao hàng',
