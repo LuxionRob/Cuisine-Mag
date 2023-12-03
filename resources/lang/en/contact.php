@@ -4,8 +4,9 @@ return [
     'Name' => 'Name',
     'Phone number' => 'Phone number',
     'Address' => 'Address',
+    'location' => 'Location',
     'type' => [
-        'preparing' =>  'preparing',
+        'preparing' => 'preparing',
         'packaging' => 'packaging',
         'delivering' => 'delivering',
         'delivered' => 'delivered',

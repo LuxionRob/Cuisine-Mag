@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Contact\ContactRequest;
 use App\Models\Contact;
+use App\Models\Location;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,7 +29,10 @@ class ContactController extends Controller
     public function store(ContactRequest $request)
     {
         $validated = $request->validated();
-        $contact = Contact::create($validated);
+        $coordinate = ['x' => explode(',', $validated['location'])[0], 'y' => explode(',', $validated['location'])[1], 'detail' => $validated['address']];
+        $location = Location::create($coordinate);
+        $contact = ['name' => $validated['name'], 'phone_number' => $validated['phone_number'], 'location_id' => $location->id, 'user_id' => Auth::id()];
+        $contact = Contact::create($contact);
         $contact->save();
 
         return redirect(route('users.show', Auth::id()))->with('success', trans('contact.store.success'));
