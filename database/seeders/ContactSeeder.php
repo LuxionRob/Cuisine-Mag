@@ -15,7 +15,9 @@ class ContactSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::all();
-        Contact::factory()->hasLocation(1)->count(20)->create();
+        $users = User::all();
+        foreach ($users as $user) {
+            Contact::factory()->for($user, 'user')->hasLocation(1)->hasOrders(5)->count(2)->create();
+        }
     }
 }

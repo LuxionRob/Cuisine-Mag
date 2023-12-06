@@ -37,24 +37,28 @@ class OrderController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $user->load('orders.orderItems.product');
-        foreach ($user->orders as $order) {
-            $cancel = 0;
-            foreach ($order->orderItems as $orderItem) {
-                if ($orderItem->status !== OrderStatus::CANCELED && $orderItem->product->number_in_stock == -1) {
-                    $cancel = 1;
-                    break;
-                }
-            }
-            if ($cancel == 1) {
+        $user->load('contacts.orders.orderItems.product');
+        $orderList = [];
+        foreach ($user->contacts as $contact) {
+            foreach ($contact->orders as $order) {
+                array_push($orderList, $order);
+                $cancel = 0;
                 foreach ($order->orderItems as $orderItem) {
-                    $orderItem->status = OrderStatus::CANCELED;
-                    $orderItem->save();
+                    if ($orderItem->status !== OrderStatus::CANCELED && $orderItem->product->number_in_stock == -1) {
+                        $cancel = 1;
+                        break;
+                    }
+                }
+                if ($cancel == 1) {
+                    foreach ($order->orderItems as $orderItem) {
+                        $orderItem->status = OrderStatus::CANCELED;
+                        $orderItem->save();
+                    }
                 }
             }
         }
 
-        return view('orders.index', compact('user'));
+        return view('orders.index')->with('orders', $orderList);
     }
 
     /**
@@ -96,7 +100,6 @@ class OrderController extends Controller
         foreach ($groupedProducts as $salesmanId => $items) {
             DB::transaction(function () use ($request, $items) {
                 $order = new Order;
-                $order->user_id = Auth::id();
                 $order->contact_id = $request["contact_id"];
                 $order->save();
 
@@ -159,7 +162,7 @@ class OrderController extends Controller
      */
     public function update(OrderUpdateRequest $request, Order $order)
     {
-        if ($order->user_id !== Auth::id()) {
+        if ($order->contact->user_id !== Auth::id()) {
             return redirect('/')->with('fail', trans('auth.403'));
         }
 
@@ -180,7 +183,7 @@ class OrderController extends Controller
      */
     public function cancel(Order $order)
     {
-        if ($order->user_id !== Auth::id()) {
+        if ($order->contact->user_id !== Auth::id()) {
             return redirect(route('orders.index'))->with('fail', trans('auth.403'));
         }
 

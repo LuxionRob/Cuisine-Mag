@@ -10,7 +10,7 @@
         <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div class="w-full">
                 <div class="mx-auto mb-4 w-1/2">
-                    <form action="{{ route('products.search') }}" method="GET">
+                    <form action="{{ route('products.search') }}" method="GET" class="flex justify-center items-center">
                         <input type="text" class="form-control" placeholder="{{ __('product.index.find') }}"
                             name="search" value="{{ app('request')->input('search') }}">
                         <select data-filter="make" name="category" class="filter-make form-control filter"">
@@ -21,7 +21,7 @@
                             <option value="2" @if (app('request')->input('category') == 2) selected @endif>
                                 {{ __('product.index.drink') }}</option>
                         </select>
-                        <button class="w-1/6 rounded bg-blue-500 p-2 text-white" type="submit">Tìm</button>
+                        <button class="w-1/6 rounded bg-blue-500 p-2 text-white ml-1" type="submit">Tìm</button>
                     </form>
                 </div>
 

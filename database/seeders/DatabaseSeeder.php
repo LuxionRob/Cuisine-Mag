@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             ContactSeeder::class,
             StoreSeeder::class,
             CategoryProductSeeder::class,
-            OrderSeeder::class,
+            OrderItemSeeder::class,
         ]);
 
         CartItem::factory(10)->create();
