@@ -2,8 +2,6 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MapDetermination } from '../components'
 import { EsriProvider } from 'leaflet-geosearch'
-import { add } from '../api/addContact'
-import { marker } from 'leaflet'
 
 export default function CreateContactPage() {
     const { t } = useTranslation()

@@ -3,8 +3,8 @@
 
     <div class='py-8'>
         <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-            @if ($user->orders->count())
-                @foreach ($user->orders as $order)
+            @if (count($orders))
+                @foreach ($orders as $order)
                     @if ($order->orderItems->count() > 0)
                         <div class="mb-2 bg-white rounded p-4 flex flex-col items-center">
                             <div

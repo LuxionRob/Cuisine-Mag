@@ -19,7 +19,7 @@ class StoreSeeder extends Seeder
         $salesman = User::where('role', UserRole::ROLE_SALESMAN)->get();
 
         foreach ($salesman as $value) {
-            Store::factory()->hasLocation()->hasProducts(20)->for($value)->create();
+            Store::factory()->hasLocation()->hasProducts(50)->for($value)->create();
         }
     }
 }
