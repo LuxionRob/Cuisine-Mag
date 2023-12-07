@@ -37,4 +37,9 @@ class AdminOrderController extends Controller
 
         return redirect(route('orders.show', $order))->with('success', 'order.update.success');
     }
+
+    public function map()
+    {
+        return view('map');
+    }
 }
