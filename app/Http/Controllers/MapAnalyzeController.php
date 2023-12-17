@@ -13,8 +13,8 @@ class MapAnalyzeController extends Controller
         $storesWithLocation = $stores->map(function ($store) use ($stores) {
             return [
                 "id" => $store->id,
-                "x" => $store->location->x,
-                "y" => $store->location->y,
+                "x" => $store->location->coordinate->getLat(),
+                "y" => $store->location->coordinate->getLng(),
                 "name" => $store->name,
                 "details" => $store->location->detail,
             ];
