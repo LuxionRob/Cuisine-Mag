@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class LocationFactory extends Factory
@@ -14,8 +15,7 @@ class LocationFactory extends Factory
     public function definition()
     {
         return [
-            'x' => 10.8617 + (rand(-100, 100) / 1000.0),
-            'y' => 106.6944 + (rand(-100, 100) / 1000.0),
+            'coordinate' => new Point(10.8617 + (rand(-100, 100) / 1000.0), 106.6944 + (rand(-100, 100) / 1000.0)),
             'detail' => $this->faker->address,
         ];
     }
