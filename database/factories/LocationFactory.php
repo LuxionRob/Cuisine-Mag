@@ -15,7 +15,7 @@ class LocationFactory extends Factory
     public function definition()
     {
         return [
-            'coordinate' => new Point(10.8617 + (rand(-100, 100) / 1000.0), 106.6944 + (rand(-100, 100) / 1000.0)),
+            'coordinates' => new Point(11.054305555507092 + (rand(-80, 80) / 1000.0), 106.83763888911924 + (rand(-100, 100) / 1000.0)),
             'detail' => $this->faker->address,
         ];
     }

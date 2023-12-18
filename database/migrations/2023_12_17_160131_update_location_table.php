@@ -16,7 +16,7 @@ class UpdateLocationTable extends Migration
         Schema::table('locations', function (Blueprint $table) {
             $table->dropColumn('x');
             $table->dropColumn('y');
-            $table->point('coordinate');
+            $table->point('coordinates');
         });
     }
 
@@ -28,7 +28,7 @@ class UpdateLocationTable extends Migration
     public function down()
     {
         Schema::table('locations', function (Blueprint $table) {
-            $table->dropColumn('coordinate');
+            $table->dropColumn('coordinates');
             $table->float('x');
             $table->float('y');
         });

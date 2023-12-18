@@ -15,10 +15,8 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('contact_id');
             $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -31,9 +29,7 @@ class CreateOrdersTable extends Migration
     public function down()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->dropForeign('orders_user_id_foreign');
             $table->dropForeign('orders_contact_id_foreign');
-            $table->dropColumn('user_id');
             $table->dropColumn('contact_id');
         });
         Schema::dropIfExists('orders');

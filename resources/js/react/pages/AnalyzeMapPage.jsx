@@ -1,16 +1,25 @@
-import { MapContainer, Marker, TileLayer } from 'react-leaflet'
-import { getStores } from '../api/analyzeMap'
+import { MapContainer, Marker, TileLayer, GeoJSON, Polygon } from 'react-leaflet'
+import { getStores, getStore } from '../api/analyzeMap'
 import { useEffect, useState } from 'react'
+import { convex } from '@turf/turf'
 
 export default function AnalyzeMapPage() {
-    const position = [10, 106]
+    const position = [11.163194444396, 106.35736111134]
     const [stores, setStores] = useState([])
-
+    const [pointsAroundStore, setPointsAroundStore] = useState({})
     const fetchStores = async () => {
         try {
             const res = await getStores()
             setStores(res.data)
-            console.log(res.data)
+            return res
+        } catch (error) {}
+    }
+
+    const fetchStore = async id => {
+        try {
+            const res = await getStore(id)
+            const polygon = convex(res.data)
+            setPointsAroundStore(polygon)
             return res
         } catch (error) {}
     }
@@ -19,6 +28,10 @@ export default function AnalyzeMapPage() {
         fetchStores()
     }, [])
 
+    const handleMarkerClick = e => {
+        fetchStore(e.target.options.data)
+    }
+
     return (
         <MapContainer center={position} zoom={13} scrollWheelZoom={true} className="h-96 w-full">
             <TileLayer
@@ -26,8 +39,18 @@ export default function AnalyzeMapPage() {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             {stores.map(store => (
-                <Marker position={[store.x, store.y]}></Marker>
+                <Marker
+                    eventHandlers={{
+                        click: handleMarkerClick,
+                    }}
+                    key={store.id}
+                    data={store.id}
+                    position={[store.y, store.x]}
+                ></Marker>
             ))}
+            {pointsAroundStore?.type && (
+                <Polygon positions={pointsAroundStore.geometry.coordinates} />
+            )}
         </MapContainer>
     )
 }

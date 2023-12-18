@@ -8,7 +8,7 @@ export default function CreateContactPage() {
     const [address, setAddress] = useState('')
     const [name, setName] = useState('')
     const [phoneNumber, setPhoneNumber] = useState('')
-    const [coordinate, setCoordinate] = useState({ x: 0, y: 0 })
+    const [coordinates, setCoordinates] = useState({ x: 0, y: 0 })
     const [showMarker, setShowMarker] = useState(false)
     const provider = new EsriProvider()
 
@@ -22,7 +22,7 @@ export default function CreateContactPage() {
 
     const handleAddressChange = e => {
         provider.search({ query: e.target.value }).then(result => {
-            setCoordinate({ x: result[0].y, y: result[0].x })
+            setCoordinates({ x: result[0].y, y: result[0].x })
             setShowMarker(!showMarker)
         })
         setAddress(e.target.value)
@@ -58,8 +58,8 @@ export default function CreateContactPage() {
                 value={phoneNumber}
             />
             <label>{t('contact.location')}</label>
-            <MapDetermination provider={provider} marker={{ isShow: showMarker, ...coordinate }} />
-            <input type="hidden" name="location" value={Object.values(coordinate)} />
+            <MapDetermination provider={provider} marker={{ isShow: showMarker, ...coordinates }} />
+            <input type="hidden" name="location" value={Object.values(coordinates)} />
             <button type="submit" className="button primary mr-4 mt-4">
                 {t('contact.create.button')}
             </button>
