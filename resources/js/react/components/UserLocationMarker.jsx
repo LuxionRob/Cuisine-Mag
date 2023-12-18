@@ -11,7 +11,6 @@ export default function UserLocationMarker() {
     useEffect(() => {
         map.locate().on('locationfound', function (e) {
             setPositionString(JSON.stringify({ x: e.latitude, y: e.longitude }))
-            console.log(e)
             setPosition(e.latlng)
             map.flyTo(e.latlng, map.getZoom())
             const radius = e.accuracy

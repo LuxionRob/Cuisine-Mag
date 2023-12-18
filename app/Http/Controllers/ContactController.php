@@ -29,8 +29,8 @@ class ContactController extends Controller
     public function store(ContactRequest $request)
     {
         $validated = $request->validated();
-        $coordinate = ['x' => explode(',', $validated['location'])[0], 'y' => explode(',', $validated['location'])[1], 'detail' => $validated['address']];
-        $location = Location::create($coordinate);
+        $coordinates = ['x' => explode(',', $validated['location'])[0], 'y' => explode(',', $validated['location'])[1], 'detail' => $validated['address']];
+        $location = Location::create($coordinates);
         $contact = ['name' => $validated['name'], 'phone_number' => $validated['phone_number'], 'location_id' => $location->id, 'user_id' => Auth::id()];
         $contact = Contact::create($contact);
         $contact->save();
