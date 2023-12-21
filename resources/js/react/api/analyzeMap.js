@@ -7,3 +7,7 @@ export const getStores = () => {
 export const getStore = id => {
     return instance.get('stores/' + id)
 }
+
+export const getDensity = async (page, limit) => {
+    return instance.get('density', { params: { page, limit } })
+}
