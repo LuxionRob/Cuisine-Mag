@@ -38,6 +38,7 @@
         "leaflet-defaulticon-compatibility": "^0.1.2",
         "leaflet-geosearch": "^3.11.0",
         "leaflet-react": "^3.0.5",
+        "leaflet.heat": "^0.2.0",
         "react-i18next": "^13.5.0",
         "react-leaflet": "^4.2.1",
         "remove": "^0.1.5"

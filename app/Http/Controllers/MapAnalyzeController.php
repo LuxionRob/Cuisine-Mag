@@ -4,13 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\PopulationDensity;
 use App\Models\Store;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class MapAnalyzeController extends Controller
 {
+    const DEFAULT_LIMIT = 10000;
+
     public function stores()
     {
         $stores = Store::with('location')->get();
-        $storesWithLocation = $stores->map(function ($store) use ($stores) {
+        $storesWithLocation = $stores->map(function ($store) {
             return [
                 "id" => $store->id,
                 "x" => $store->location->coordinates->getLng(),
@@ -42,8 +46,8 @@ class MapAnalyzeController extends Controller
     {
         $multiPoints = PopulationDensity::distanceValue('coordinates', $store->location->coordinates)
             ->distance('coordinates', $store->location->coordinates, 0.05) //Radius: ~5.95km
-            ->orderByDistance('coordinates', $store->location->coordinates, 'desc')
             ->get();
+
         $geojs = [
             "type" => "FeatureCollection",
             "features" => $multiPoints->map(function ($point) use ($store) {
@@ -55,8 +59,13 @@ class MapAnalyzeController extends Controller
                         "coordinates" => [$point->coordinates->getLat(), $point->coordinates->getLng()],
                     ],
                     "properties" => [
-                        'hvDistance' => $this->haversineGreatCircleDistance($point->coordinates->getLat(), $point->coordinates->getLng(), $store->location->coordinates->getLat(), $store->location->coordinates->getLng(), 6371000),
-                        'distance' => $point->distance
+                        'distance' => $this->haversineGreatCircleDistance(
+                            $point->coordinates->getLat(),
+                            $point->coordinates->getLng(),
+                            $store->location->coordinates->getLat(),
+                            $store->location->coordinates->getLng(), 6371000
+                        ),
+                        'populationDensity' => $point->density,
                     ],
                 ];
             })
@@ -66,5 +75,39 @@ class MapAnalyzeController extends Controller
         return response()->json($geojs);
     }
 
+    public function showDensity(Request $request)
+    {
+        $page = $request->input('page');
+        $limit = $request->input('limit');
 
+        $multiPoints = PopulationDensity::paginate($limit ?? self::DEFAULT_LIMIT, ['*'], 'page', $page ?? 1);
+
+        if ($page > $multiPoints->lastPage()) {
+            return response()->json(Response::HTTP_NOT_FOUND);
+        } else if ($page < $multiPoints->lastPage()) {
+            $response = ['nextPage' => $multiPoints->currentPage() + 1];
+        }
+
+        $geojs = [
+            "type" => "FeatureCollection",
+            "features" => $multiPoints->map(function ($point) {
+
+                return [
+                    "type" => "Feature",
+                    "geometry" => [
+                        "type" => "Point",
+                        "coordinates" => [$point->coordinates->getLat(), $point->coordinates->getLng()],
+                    ],
+                    "properties" => [
+                        'populationDensity' => $point->density,
+                    ],
+                ];
+            })
+        ];
+
+        $response['geo'] = $geojs;
+        $response['lastPage'] = $multiPoints->lastPage();
+
+        return response()->json($response, Response::HTTP_OK);
+    }
 }

@@ -1,12 +1,17 @@
-import { MapContainer, Marker, TileLayer, GeoJSON, Polygon } from 'react-leaflet'
-import { getStores, getStore } from '../api/analyzeMap'
+import { MapContainer, Marker, TileLayer, Polygon } from 'react-leaflet'
 import { useEffect, useState } from 'react'
 import { convex } from '@turf/turf'
+
+import { getStores, getStore, getDensity } from '../api/analyzeMap'
+import { HeatMap } from '../components'
 
 export default function AnalyzeMapPage() {
     const position = [11.163194444396, 106.35736111134]
     const [stores, setStores] = useState([])
     const [pointsAroundStore, setPointsAroundStore] = useState({})
+    const [heatPoints, setHeatPoints] = useState([])
+    const [densityLastPage, setDensityLastPage] = useState(1)
+
     const fetchStores = async () => {
         try {
             const res = await getStores()
@@ -24,8 +29,38 @@ export default function AnalyzeMapPage() {
         } catch (error) {}
     }
 
+    const fetchDensity = async () => {
+        try {
+            let result = heatPoints
+            const firstRes = await getDensity(1, null)
+
+            const points = firstRes.data.geo.features.map(p => [
+                p.geometry.coordinates[0],
+                p.geometry.coordinates[1],
+                p.properties.populationDensity / 6.0,
+            ])
+
+            setHeatPoints(n => [...n, ...points])
+
+            new Array(firstRes.data.lastPage - 1).fill(0).map((e, i) =>
+                getDensity(i + 2, null).then(res => {
+                    const points = res.data.geo.features.map(p => [
+                        p.geometry.coordinates[0],
+                        p.geometry.coordinates[1],
+                        p.properties.populationDensity / 6.0,
+                    ])
+                    setHeatPoints(n => [...n, ...points])
+                }),
+            )
+        } catch (error) {}
+    }
+
     useEffect(() => {
         fetchStores()
+    }, [])
+
+    useEffect(() => {
+        fetchDensity()
     }, [])
 
     const handleMarkerClick = e => {
@@ -51,6 +86,7 @@ export default function AnalyzeMapPage() {
             {pointsAroundStore?.type && (
                 <Polygon positions={pointsAroundStore.geometry.coordinates} />
             )}
+            <HeatMap points={heatPoints} />
         </MapContainer>
     )
 }
