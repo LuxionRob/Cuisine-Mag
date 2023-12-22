@@ -10,7 +10,6 @@
             <div class="basis-2/3 sm:px-6 lg:px-8">
                 <form action="{{ route('cart.store') }}" method="POST">
                     @csrf
-
                     <div class="grid grid-cols-2 gap-4">
                         <div class="w-full h-full">
                             @if (strpos($product->photo, 'https://via.placeholder.com/') === 0)
@@ -25,10 +24,29 @@
 
                             <div class="font-bold text-5xl mb-4">{{ $product->name }}</div>
 
-                            <div class="grid grid-cols-3 gap-4">
-                                <div class="border-r-2 border-gray-500 text-gray-500 text-base mb-4">{{ __('product.show.ratePoint') }}{{ $product->rate }}/5</div>
-                                <div class="border-r-2 border-gray-500 text-gray-500 text-base mb-4">{{ $product->review }}{{ __('product.show.comment') }}</div>
-                                <div class="text-gray-500 text-base mb-4">{{ $product->number_of_purchase }}{{ __('product.show.sold') }}</div>
+                            <div class="grid grid-cols-3">
+                                <div class="border-r-2 border-gray-500 text-gray-500 text-base mb-4">
+                                    <p class="text-center">{{ __('product.show.ratePoint') }}</p>
+                                    <div class="text-center">
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            @if($i < $product->rate)
+                                                <i class="fa fa-solid fa-star text-yellow-500"></i>
+                                            @elseif($i > $product->rate && $i - 1 < $product->rate)
+                                                <i class="fa fa-solid fa-star-half-stroke text-yellow-500"></i>
+                                            @else
+                                                <i class="fa fa-regular fa-star text-yellow-500"></i>
+                                            @endif
+                                        @endfor
+                                    </div>
+                                </div>
+                                <div class="border-r-2 border-gray-500 text-gray-500 text-base mb-4">
+                                    <p class="text-center">{{ __('product.show.comment') }}</p>
+                                    <p class="text-center">{{ $product->review }}</p>
+                                </div>
+                                <div class="text-gray-500 text-base mb-4">
+                                    <p class="text-center">{{ __('product.show.sold') }}</p>
+                                    <p class="text-center">{{ $product->number_of_purchase }}</p>
+                                </div>
                             </div>
 
                             <div class="font-bold text-5xl text-red-600 mb-4">{{ $product->price }} $</div>
@@ -47,7 +65,7 @@
                                     <span class="text-sm font-semibold">-</span>
                                 </button>
                                 <input name="quantity" data-max="{{ $product->number_in_stock }}" type="text"
-                                       class="quantity-input w-1/5 text-center border border-gray-300 px-2 py-1" value="1" readonly>
+                                    class="quantity-input w-1/6 text-center border border-gray-300 px-2 py-1" value="1" readonly>
                                 <button type="button" class="plus-btn w-1/12 p-1 bg-gray-300 hover:bg-gray-400 rounded-r">
                                     <span class="text-sm font-semibold">+</span>
                                 </button>
@@ -67,12 +85,38 @@
 
                 <div class="mt-12 bg-white p-4 rounded">
                     <div class="font-bold text-2xl mb-8">{{ __('product.show.comment') }}</div>
+                    <form method="post" action="{{ route('product.review.store', ['id' => $product->id]) }}" class="flex space-x-4 pb-4">
+                        @csrf    
+                        <img class="w-8 h-8" src="https://cdn-icons-png.flaticon.com/512/64/64572.png" alt="user profile">
+                        <div class="flex flex-col w-full">
+                            <input class="w-full border-0 focus:shadow-none border-b-2 border-gray-400" type="text" name="review" placeholder="{{ __('product.show.comment') }}"/>
+                            <input type="hidden" name="rating" id="rating" value="{{ old('rating') }}">
+                            <div class="mt-2 flex justify-between items-center">
+                                <div id="ratingStars">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <i class="fa fa-regular fa-star text-yellow-500"></i>
+                                    @endfor
+                                </div>
+                                <button type="submit" class="px-4 bg-blue-500 h-12">
+                                    {{ __('product.show.comment') }}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                     @foreach ($reviews as $index => $review)
                         <div class="flex space-x-4 p-4 border-t border-gray-200">
                             <img class="w-8 h-8" src="https://cdn-icons-png.flaticon.com/512/64/64572.png" alt="user profile">
                             <div class="flex flex-col">
                                 <div class="text-xl font-bold">{{ $review->user->username }}</div>
-                                <div class="text-base text-gray-500">{{ __('product.show.qualityRating') }}{{ $review->rate }}/5</div>
+                                <div class="text-base text-gray-500">{{ __('product.show.qualityRating') }}
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        @if($i > $review->rate)
+                                            <i class="fa fa-regular fa-star text-yellow-500"></i>
+                                        @else
+                                            <i class="fa fa-solid fa-star text-yellow-500"></i>
+                                        @endif
+                                    @endfor
+                                </div>
                                 <div class="mt-4 text-base pr-4 mb-4">{{ $review->content }}</div>
                             </div>
                         </div>
@@ -115,4 +159,28 @@
             @endif
         </div>
     </div>
+    <!-- Handle star -->
+    <script>
+        const ratingStars = document.getElementById('ratingStars');
+        const stars = ratingStars.getElementsByTagName('i');
+        let selectedRating = 0;
+
+        for (let i = 0; i < stars.length; i++) {
+            stars[i].addEventListener('click', function() {
+                // Đặt class fa-solid cho thẻ được click và thẻ trước đó
+                for (let j = 0; j <= i; j++) {
+                    stars[j].classList.remove('fa-regular');
+                    stars[j].classList.add('fa-solid');
+                }
+                // Đặt class fa-regular cho các thẻ sau đó
+                for (let j = i + 1; j < stars.length; j++) {
+                    stars[j].classList.remove('fa-solid');
+                    stars[j].classList.add('fa-regular');
+                }
+                // Lưu giá trị rate
+                selectedRating = i + 1;
+                document.getElementById('rating').value = selectedRating;
+            });
+        }
+    </script>
 </x-app-layout>

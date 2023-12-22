@@ -38,6 +38,9 @@ Route::resource('/contacts', ContactController::class)->middleware(['auth', 'ver
 Route::resource('/cart', CartController::class);
 
 Route::resource('/orders', OrderController::class)->middleware(['auth', 'verified']);
+
+Route::post('/product/{id}/review', [ProductController::class, 'storeReview'])->name('product.review.store');
+
 Route::delete('/orders/{order}', [OrderController::class, 'cancel'])->name('orders.cancel');
 
 require __DIR__ . '/auth.php';

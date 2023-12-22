@@ -188,4 +188,17 @@ class ProductController extends Controller
 
         return redirect()->route('user.products', Auth::id())->with('success', trans('product.destroy.success'));
     }
+
+    public function storeReview(Request $request, $id)
+    {
+        // Assuming you have a ProductReview model
+        ProductReview::create([
+            'product_id' => $id,
+            'user_id' => auth()->id(),
+            'content' => $request->input('review'),
+            'rate' => $request->input('rating')
+        ]);
+
+        return redirect()->back()->with('success', trans('product.comment.success'));
+    }
 }
