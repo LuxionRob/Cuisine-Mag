@@ -15,4 +15,5 @@ Route::prefix('api')->name('api.')->group(function () {
     Route::get('stores', [MapAnalyzeController::class, 'stores'])->name('stores');
     Route::get('stores/{store}', [MapAnalyzeController::class, 'showStore'])->name('showStore');
     Route::get('density', [MapAnalyzeController::class, 'showDensity'])->name('showDensity');
+    Route::get('roads', [MapAnalyzeController::class, 'showRoads'])->name('showRoads');
 });
