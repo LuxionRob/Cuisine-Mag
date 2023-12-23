@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PopulationDensity;
+use App\Models\Road;
 use App\Models\Store;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -107,6 +108,40 @@ class MapAnalyzeController extends Controller
 
         $response['geo'] = $geojs;
         $response['lastPage'] = $multiPoints->lastPage();
+
+        return response()->json($response, Response::HTTP_OK);
+    }
+
+    function showRoads(Request $request)
+    {
+        $page = $request->input('page');
+        $limit = $request->input('limit');
+
+        $multiString = Road::paginate($limit ?? self::DEFAULT_LIMIT, ['*'], 'page', $page ?? 1);
+
+        if ($page > $multiString->lastPage()) {
+            return response()->json(Response::HTTP_NOT_FOUND);
+        } else if ($page < $multiString->lastPage()) {
+            $response = ['nextPage' => $multiString->currentPage() + 1];
+        }
+
+        $geojs = [
+            "type" => "FeatureCollection",
+            "features" => $multiString->map(function ($string) {
+
+                return [
+                    "type" => "Feature",
+                    "geometry" => [
+                        $string->coordinates,
+                    ],
+                    "properties" => [
+                        'type' => $string->type,
+                    ],
+                ];
+            })
+        ];
+        $response['geo'] = $geojs;
+        $response['lastPage'] = $multiString->lastPage();
 
         return response()->json($response, Response::HTTP_OK);
     }
