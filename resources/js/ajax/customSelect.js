@@ -11,7 +11,6 @@ trigger.on('click', function (e) {
 
 options.on('click', function (e) {
     trigger.show()
-    console.log(this.children, trigger.children())
 
     trigger.children().replaceWith($(this.children).clone())
     contactInput.attr('value', this.value)
