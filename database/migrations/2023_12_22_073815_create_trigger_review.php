@@ -27,7 +27,7 @@ class CreateTriggerReview extends Migration
 
                UPDATE products
                SET rate = rating
-               WHERE product_id = NEW.product_id;
+               WHERE id = NEW.product_id;
            END
         ');
     }
