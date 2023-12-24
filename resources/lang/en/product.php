@@ -39,4 +39,7 @@ return [
         'photo' => 'Photo',
         'category' => 'Category',
     ],
+    'comment' => [
+        'success' => 'Add comment successfully',
+    ]
 ];

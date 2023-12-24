@@ -18,7 +18,7 @@ return [
         'sold' => ' Đã bán',
         'description' => 'Mô tả',
         'quantity' => 'Số lượng: ',
-        'outOff' => 'Trong tổng số ',
+        'outOff' => 'Tổng số ',
         'productAvailable' => ' sản phẩm sẵn có',
         'addCart' => 'Thêm vào giỏ hàng',
         'buy' => 'Mua ngay',
@@ -39,4 +39,7 @@ return [
         'photo' => 'Hình ảnh',
         'category' => 'Phân loại',
     ],
+    'comment' => [
+        'success' => 'Thêm bình luận thành công',
+    ]
 ];

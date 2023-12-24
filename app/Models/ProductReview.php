@@ -13,7 +13,7 @@ class ProductReview extends Model
         'user_id',
         'product_id',
         'content',
-        'vote',
+        'rate',
     ];
 
     public function product()
