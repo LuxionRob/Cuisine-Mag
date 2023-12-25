@@ -11,3 +11,7 @@ export const getStore = id => {
 export const getDensity = async (page, limit) => {
     return instance.get('density', { params: { page, limit } })
 }
+
+export const getTopFive = () => {
+    return instance.get('products/topFiveProfit')
+}

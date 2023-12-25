@@ -14,7 +14,7 @@
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex grow">
                     @auth
                         @if (Auth::user()->role === 'ADMIN' || Auth::user()->role === 'SALESMAN')
-                            <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                            <x-nav-link :href="route('dashboard.index')" :active="request()->routeIs('dashboard')">
                                 {{ __('Dashboard') }}
                             </x-nav-link>
                         @endif
@@ -82,9 +82,10 @@
                 </div>
             @else
                 <div class="flex items-center">
-                    <a href="{{ route('login') }}" class="text-sm text-gray-700 underline dark:text-gray-500">{{ __(('Log in')) }}</a>
+                    <a href="{{ route('login') }}"
+                        class="text-sm text-gray-700 underline dark:text-gray-500">{{ __('Log in') }}</a>
                     <a href="{{ route('register') }}"
-                        class="ml-4 text-sm text-gray-700 underline dark:text-gray-500">{{ __(('Register')) }}</a>
+                        class="ml-4 text-sm text-gray-700 underline dark:text-gray-500">{{ __('Register') }}</a>
                 </div>
             @endauth
         </div>

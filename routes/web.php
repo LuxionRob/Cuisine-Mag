@@ -29,9 +29,6 @@ Route::resource('/users', UserController::class)->middleware(['auth', 'verified'
 Route::get('/users/{user}/products', [UserController::class, 'showUserProducts'])
     ->name('user.products')->middleware(['auth', 'checkSalesman']);
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified', 'checkSalesman'])->name('dashboard');
 
 Route::resource('/contacts', ContactController::class)->middleware(['auth', 'verified']);
 

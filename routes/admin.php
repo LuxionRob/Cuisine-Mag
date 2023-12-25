@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminOrderController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\MapAnalyzeController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +18,25 @@ Route::prefix('api')->name('api.')->group(function () {
     Route::get('stores/{store}', [MapAnalyzeController::class, 'showStore'])->name('showStore');
     Route::get('density', [MapAnalyzeController::class, 'showDensity'])->name('showDensity');
     Route::get('roads', [MapAnalyzeController::class, 'showRoads'])->name('showRoads');
+});
+
+Route::prefix('api')->name('api.')->group(function () {
+    Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    Route::patch('orders/{order}', [OrderController::class, 'update'])->name('orders.update');
+    Route::delete('orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
+    Route::get('group-orders', [OrderController::class, 'groupIndex'])->name('orders.groupIndex');
+});
+
+Route::prefix('api')->name('api.')->group(function () {
+    Route::get('products/profitByDayAndPrevDay', [DashboardController::class, 'productProfitInDayWithPrevDay']);
+    Route::get('products/countByDayAndPrevDay', [DashboardController::class, 'productCountInDayWithPrevDay']);
+    Route::get('users/countByDayAndPrevDay', [DashboardController::class, 'userCountInDayWithPrevDay']);
+    Route::get('products/topProfitByDay', [DashboardController::class, 'getTopProductProfitByDay']);
+    Route::get('products/topProfitByWeek', [DashboardController::class, 'getTopProductProfitByWeek']);
+    Route::get('products/productRevenueByCategory', [DashboardController::class, 'getProductRevenueByCategory']);
+});
+
+Route::prefix('dashboard')->name('dashboard.')->middleware(['auth', 'verified', 'checkSalesman'])->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('index');
 });
