@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             CategoryProductSeeder::class,
             OrderItemSeeder::class,
             DensitySeeder::class,
+            RoadSeeder::class,
         ]);
 
         CartItem::factory(10)->create();
