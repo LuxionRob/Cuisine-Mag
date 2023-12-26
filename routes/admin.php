@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminOrderController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\MapAnalyzeController;
 use Illuminate\Support\Facades\Route;
 
@@ -39,4 +40,7 @@ Route::prefix('api')->name('api.')->group(function () {
 
 Route::prefix('dashboard')->name('dashboard.')->middleware(['auth', 'verified', 'checkSalesman'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('index');
+    Route::get('/users', [DashboardController::class, 'showUsers'])->name('users');
+    Route::get('/products', [DashboardController::class, 'showProducts'])->name('products');
+    Route::get('/orders', [DashboardController::class, 'showOrders'])->name('orders');
 });

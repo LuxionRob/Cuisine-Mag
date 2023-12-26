@@ -28,9 +28,6 @@ const options = (groupBy, max) => {
             position: 'top',
             horizontalAlign: 'left',
         },
-        stroke: {
-            curve: 'smooth',
-        },
         dataLabels: {
             enabled: false,
         },

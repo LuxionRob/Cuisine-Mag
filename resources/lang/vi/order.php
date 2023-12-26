@@ -4,6 +4,7 @@ return [
     'Quantity' => 'Sô lượng',
     'Total' => 'Tổng cộng (:totalQuantity sản phẩm)',
     'Payment Method' => 'Phương thức thanh toán',
+    'Amount' => 'Đơn giá',
     'id' => 'Mã',
     'empty' => 'Không tìm thấy đơn hàng nào',
     'validation' => [

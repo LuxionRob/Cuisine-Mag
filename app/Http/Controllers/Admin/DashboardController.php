@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\User;
@@ -23,7 +24,6 @@ class DashboardController extends Controller
     {
         $today = User::whereDate('created_at', Carbon::today())->get();
         $yesterday = User::whereDate('created_at', Carbon::yesterday())->get();
-
         $response = ['count' => count($today), 'growth' => $this->getGrowth(count($today), count($yesterday))];
 
         return response()->json($response);
@@ -170,8 +170,7 @@ class DashboardController extends Controller
         $response = array();
 
         $end = Carbon::today()->week;
-        $start = Carbon::today()->subMonths(1)->firstOfMonth()->week;
-
+        $start = Carbon::today()->subMonths(1)->firstOfMonth()->week + 1;
         foreach ($itemsOrderByWeek as $product) {
             $temp = array();
             $temp['name'] = $product[0]['name'];
@@ -186,7 +185,6 @@ class DashboardController extends Controller
                 }
             }
             ksort($temp['data']);
-
             $temp['data'] = array_values($temp['data']);
             array_push($response, $temp);
         }
@@ -215,7 +213,7 @@ class DashboardController extends Controller
 
         return response()->json($query->get());
     }
-    private function getGrowth($y, $t)
+    private function getGrowth($t, $y)
     {
         if ($y == 0 && $t == 0) {
             return 0;
@@ -226,5 +224,35 @@ class DashboardController extends Controller
         } else {
             return round($t / $y * 100, 2);
         }
+    }
+
+
+    public function showProducts(Request $request)
+    {
+        $page = $request->input('page');
+
+        $products = DB::table('products')->where('number_in_stock', '>', '-1')
+            ->orderBy('id', 'desc')
+            ->paginate(config('app.pagination.per_page'), ['*'], 'page', $page ?? 1);
+
+        return view('dashboard.product')->with('products', $products);
+    }
+
+    public function showUsers(Request $request)
+    {
+        $page = $request->input('page');
+        $users = User::orderBy('created_at')->paginate(config('app.pagination.per_page'), ['*'], 'page', $page ?? 1);
+
+        return view('dashboard.user')->with('users', $users);
+    }
+
+    public function showOrders(Request $request)
+    {
+        $page = $request->input('page');
+
+        $orders = Order::paginate(config('app.pagination.per_page'), ['*'], 'page', $page ?? 1);
+        $orders->load('orderItems');
+
+        return view('dashboard.order', compact('orders'));
     }
 }

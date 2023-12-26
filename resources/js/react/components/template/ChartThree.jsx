@@ -10,10 +10,6 @@ const ChartThree = () => {
 
     const fetchDate = () => {
         productRevenueByCategory(groupBy).then(res => {
-            console.log(
-                res.data.map(i => i.name),
-                res.data.map(i => i.totalRevenue),
-            )
             setLabelList(res.data.map(i => i.name))
             setData(res.data.map(i => Math.round(i.totalRevenue * 100) / 100))
         })
@@ -93,14 +89,18 @@ const ChartThree = () => {
             </div>
 
             <div className="mb-2">
-                <div id="chartThree" className="mx-auto flex justify-center">
-                    {data ? (
+                <div id="chartThree" className="mx-auto flex h-full justify-center">
+                    {data.length > 0 ? (
                         <ReactApexChart
                             options={getOptions(labelList)}
                             series={data}
                             type="donut"
                         />
-                    ) : null}
+                    ) : (
+                        <div className="mx-auto self-center">
+                            <i>No Data</i>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
