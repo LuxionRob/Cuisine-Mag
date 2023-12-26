@@ -12,7 +12,6 @@ class AdminOrderController extends Controller
     {
         $orders = Order::all();
         $orders->load('orderItems');
-        $orders->load('user');
 
         return view('authorized.orders.index', compact('orders'));
     }

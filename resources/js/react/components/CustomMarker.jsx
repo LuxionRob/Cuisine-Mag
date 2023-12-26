@@ -6,7 +6,6 @@ export default function CustomMarker({ marker }) {
 
     useEffect(() => {
         if (marker.isShow) {
-            console.log(marker)
             map.flyTo([marker.x, marker.y], map.getZoom())
         }
     }, [marker.x])

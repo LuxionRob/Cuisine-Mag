@@ -6,6 +6,7 @@ use App\Enums\UserRole;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\DeleteUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
+use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -69,8 +70,9 @@ class UserController extends Controller
     public function show(User $user)
     {
         $user->load('contacts');
+        $orders = Order::whereIn('contact_id', $user->contacts->pluck('id'))->with('orderItems')->get();
 
-        return view('users.show')->with('user', $user);
+        return view('users.show')->with('user', $user)->with('orders', $orders);
     }
 
     public function edit(User $user)

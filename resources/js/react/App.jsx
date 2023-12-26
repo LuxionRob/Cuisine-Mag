@@ -5,7 +5,8 @@ import { BrowserRouter as Router } from 'react-router-dom'
 
 import ECommerce from './pages/Dashboard/ECommerce.jsx'
 import Loader from './common/Loader'
-import routes from './routes'
+import User from './pages/User.jsx'
+import UserDetail from './pages/UserDetail.jsx'
 
 const DefaultLayout = lazy(() => import('./layout/DefaultLayout.jsx'))
 
@@ -20,29 +21,17 @@ function App() {
         <Loader />
     ) : (
         <>
-            <Router>
+            <Router basename="dashboard">
                 <Toaster
                     position="top-right"
                     reverseOrder={false}
                     containerClassName="overflow-auto"
                 />
                 <Routes>
-                    <Route path="/dashboard" element={<DefaultLayout />}>
+                    <Route element={<DefaultLayout />}>
                         <Route index element={<ECommerce />} />
-                        {routes.map((routes, index) => {
-                            const { path, Component } = routes
-                            return (
-                                <Route
-                                    key={index}
-                                    path={path}
-                                    element={
-                                        <Suspense fallback={<Loader />}>
-                                            <Component />
-                                        </Suspense>
-                                    }
-                                />
-                            )
-                        })}
+                        <Route path="users" element={<User />}></Route>
+                        <Route path="users/:id" element={<UserDetail />}></Route>
                     </Route>
                 </Routes>
             </Router>

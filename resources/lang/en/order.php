@@ -3,6 +3,7 @@
 return [
     'Quantity' => 'Quantity',
     'Total' => 'Total (:totalQuantity products)',
+    'Amount' => 'Amount',
     'Payment Method' => 'Payment Method',
     'id' => '#',
     'empty' => 'Order list is empty',

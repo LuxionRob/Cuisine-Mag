@@ -1,9 +1,12 @@
-<x-app-layout>
-    <x-slot name="header">{{ __('order.index.title') }}</x-slot>
-
+<x-dashboard-layout>
+    <header class="bg-white shadow">
+        <div class="max-w-7xl font-semibold tracking-wider mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            {{ __('order.index.title') }} </div>
+    </header>
     <div class='py-8'>
-        <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg w-full">
+        <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg w-full">
+            <div class="border-b border-gray-200 bg-white p-6 ">
+
                 @if ($orders->count() > 0)
                     <table class="w-full table-auto">
                         <thead>
@@ -57,7 +60,10 @@
                         {{ __('order.empty') }}
                     </x-no-item>
                 @endif
+                <div class="mt-4">
+                    {{ $orders->links('pagination::tailwind') }}
+                </div>
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-dashboard-layout>

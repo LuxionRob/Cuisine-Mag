@@ -27,3 +27,15 @@ export const productRevenueByCategory = groupBy => {
         },
     })
 }
+
+export const getAllUser = () => {
+    return instance.get('users')
+}
+
+export const deleteUser = id => {
+    return instance.delete('users/' + id)
+}
+
+export const getUserById = id => {
+    return instance.get('users/' + id)
+}
