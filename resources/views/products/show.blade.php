@@ -21,15 +21,16 @@
                         <div class="w-full justify-items-center">
 
                             <input type="hidden" name="id" value="{{ $product->id }}" />
-
-                            <div class="font-bold text-5xl mb-4">{{ $product->name }}</div>
-
+                            <div class="flex justify-between items-center">
+                                <div class="font-bold text-5xl mb-4">{{ $product->name }}</div>
+                                <div class="font-bold text-5xl text-red-600 mb-4">{{ $product->price }} $</div>
+                            </div>
                             <div class="grid grid-cols-3">
                                 <div class="border-r-2 border-gray-500 text-gray-500 text-base mb-4">
                                     <p class="text-center">{{ __('product.show.ratePoint') }}</p>
                                     <div class="text-center">
                                         @for ($i = 1; $i <= 5; $i++)
-                                            @if($i < $product->rate)
+                                            @if($i <= $product->rate)
                                                 <i class="fa fa-solid fa-star text-yellow-500"></i>
                                             @elseif($i > $product->rate && $i - 1 < $product->rate)
                                                 <i class="fa fa-solid fa-star-half-stroke text-yellow-500"></i>
@@ -48,9 +49,6 @@
                                     <p class="text-center">{{ $product->number_of_purchase }}</p>
                                 </div>
                             </div>
-
-                            <div class="font-bold text-5xl text-red-600 mb-4">{{ $product->price }} $</div>
-
                             <div>
                                 <div class="font-bold text-xl mb-4">{{ __('product.show.description') }}</div>
                                 <div class="w-full h-32 bg-gray-200 text-gray-700 rounded-l border-2 border-gray-300 p-4 ">
@@ -89,7 +87,7 @@
                         @csrf    
                         <img class="w-8 h-8" src="https://cdn-icons-png.flaticon.com/512/64/64572.png" alt="user profile">
                         <div class="flex flex-col w-full">
-                            <input class="w-full border-0 focus:shadow-none border-b-2 border-gray-400" type="text" name="review" placeholder="{{ __('product.show.comment') }}"/>
+                            <input class="w-full border-0 focus:ring-0 border-b-2 border-gray-400" type="text" name="review" placeholder="{{ __('product.show.comment') }}"/>
                             <input type="hidden" name="rating" id="rating" value="{{ old('rating') }}">
                             <div class="mt-2 flex justify-between items-center">
                                 <div id="ratingStars">
@@ -133,24 +131,29 @@
                                 @csrf
 
                                 <div class="w-screen-1280 h-32 mr-8 p-4 bg-white mb-4 shadow-lg flex justify-between">
-                                    <div class="flex">
+                                    <div class="flex w-full">
                                         <div class="flex items-center">
                                             @if (strpos($sameUserProduct->photo, 'https://via.placeholder.com/') === 0)
-                                                <img class="w-28 h-28 mb-2" src="{{ $sameUserProduct->photo }}" alt="Card image">
+                                                <img class="w-28 h-28" src="{{ $sameUserProduct->photo }}" alt="Card image">
                                             @else
-                                                <img class="w-28 h-28 mb-2" src="{{ asset($sameUserProduct->photo) }}" alt="Card image">
+                                                <img class="w-28 h-28" src="{{ asset($sameUserProduct->photo) }}" alt="Card image">
                                             @endif
                                         </div>
-                                        <div class="ml-4 flex flex-col justify-between">
+                                        <div class="ml-4 flex flex-1 flex-col justify-between">
                                             <input type="hidden" name="id" value="{{ $sameUserProduct->id }}" />
-                                            <div class="text-xl font-bold">{{ $sameUserProduct->name }}</div>
-                                            <div class="text-3xl text-red-600 font-bold mb-4">{{ $sameUserProduct->price }} $</div>
+                                            <div class="flex justify-between items-center">
+                                                <div class="text-xl font-bold">{{ $sameUserProduct->name }}</div>
+                                                <div class="text-3xl text-red-600 font-bold">{{ $sameUserProduct->price }} $</div>
+                                            </div>
+                                            <div class="flex justify-between items-center">
+                                                <div class="max-h-14 text-ellipsis overflow-hidden text-sm text-gray-500 mr-2">{{ $sameUserProduct->description }}</div>
+                                                <button class="rounded-full h-10 bg-gray-200 hover:bg-gray-300" type="submit">
+                                                    <i class="fa fa-cart-plus w-10"></i>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-
-                                    <button class="px-6 mb-4" type="submit">
-                                        <i class="fa fa-cart-plus"></i>
-                                    </button>
+                                    
                                 </div>
                             </form>
                         </a>

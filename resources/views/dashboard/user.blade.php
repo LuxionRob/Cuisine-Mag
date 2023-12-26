@@ -35,19 +35,19 @@
                         @foreach ($users as $user)
                             @unless ($user->id === Auth::id())
                                 <tr>
-                                    <td class="border px-4 py-2">
+                                    <td class="border px-4 py-2 text-center">
                                         {{ $user->id }}
                                     </td>
-                                    <td class="border px-4 py-2">
+                                    <td class="border px-4 py-2 text-center">
                                         {{ $user->username }}
                                     </td>
-                                    <td class="border px-4 py-2">
+                                    <td class="border px-4 py-2 text-center">
                                         {{ $user->email }}
                                     </td>
-                                    <td class="border px-4 py-2">
+                                    <td class="border px-4 py-2 text-center">
                                         {{ $user->created_at }}
                                     </td>
-                                    <td class="flex justify-evenly border px-4 py-2">
+                                    <td class="flex justify-evenly border px-4 py-2 text-center">
                                         <a href="{{ route('users.show', $user->id) }}" class="button primary">
                                             {{ __('View') }}
                                         </a>

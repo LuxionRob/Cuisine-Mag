@@ -35,26 +35,26 @@
                     <tbody>
                         @foreach ($products as $index => $product)
                             <tr>
-                                <td class="border px-4 py-2">
+                                <td class="border text-center px-4 py-2">
                                     {{ $index + 1 }}
                                 </td>
-                                <td class="border px-4 py-2">
+                                <td class="border text-center px-4 py-2">
                                     {{ $product->name }}
                                 </td>
-                                <td class="border px-4 py-2">
+                                <td class="border text-center px-4 py-2">
                                     {{ $product->price }}
                                 </td>
-                                <td class="border px-4 py-2">
+                                <td class="border text-center px-4 py-2">
                                     {{ $product->number_in_stock }}
                                 </td>
-                                <td class="border px-4 py-2">
+                                <td class="border flex justify-center px-4 py-2">
                                     @if (strpos($product->photo, 'https://via.placeholder.com/') === 0)
                                         <img class="w-40 h-40" src="{{ $product->photo }}" alt="Card image">
                                     @else
                                         <img class="w-40 h-40" src="{{ asset($product->photo) }}" alt="Card image">
                                     @endif
                                 </td>
-                                <td class="border px-4 py-2">
+                                <td class="border text-center px-4 py-2">
                                     <a href="{{ route('products.show', ['product' => $product->id]) }}"
                                         class="button primary">
                                         {{ __('View') }}
