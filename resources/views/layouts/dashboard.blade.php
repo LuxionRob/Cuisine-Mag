@@ -45,8 +45,8 @@
                     </x-sidebar-link>
                 </div>
             </div>
-            <main class="flex-1 h-[800px] p-8">
-                <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 mt-4 -mb-8">
+            <main class="flex-1 h-[800px] p-8 relative">
+                <div class="max-w-full font-semibold tracking-wider">
                     @if (Session::has('fail'))
                         <div class="bg-red-500 text-slate-100 p-4 rounded-lg shadow-md mb-4 mx-auto">
                             {{ Session::get('fail') }}
@@ -63,7 +63,8 @@
                             <span class="block sm:inline">{{ __($message) }}</span>
                         </div>
                     @enderror
-                </div>{{ $slot }}
+                </div>
+                {{ $slot }}
             </main>
         </div>
     </div>
