@@ -27,24 +27,22 @@
             <div class="bg-white w-1/6 px-4 py-4">
                 <h2 class="text-lg font-bold px-4 mb-4">{{ __('dashboard.header') }}</h2>
                 <div>
-                    <a class="flex items-center py-1 px-4 mb-1 hover:bg-gray-200 bg-gray-200"
-                        href={{ route('dashboard.index') }}>
+                    <x-sidebar-link :active="request()->routeIs('dashboard.index')" :href="route('dashboard.index')">
                         <i class="fa-solid fa-chart-line w-1/6"></i>
                         <h5 class="flex-1">{{ __('dashboard.dashboard') }}</h5>
-                    </a>
-                    <a class="flex items-center py-1 px-4 mb-1 hover:bg-gray-200"
-                        href={{ route('dashboard.products') }}>
+                    </x-sidebar-link>
+                    <x-sidebar-link :active="request()->routeIs('dashboard.products')" :href="route('dashboard.products')">
                         <i class="fa-solid fa-burger w-1/6"></i>
                         <h5 class="flex-1">{{ __('dashboard.product') }}</h5>
-                    </a>
-                    <a class="flex items-center py-1 px-4 mb-1 hover:bg-gray-200" href={{ route('dashboard.users') }}>
+                    </x-sidebar-link>
+                    <x-sidebar-link :active="request()->routeIs('dashboard.users')" :href="route('dashboard.users')">
                         <i class="fa-solid fa-user w-1/6"></i>
                         <h5 class="flex-1">{{ __('dashboard.user') }}</h5>
-                    </a>
-                    <a class="flex items-center py-1 px-4 mb-1 hover:bg-gray-200" href={{ route('dashboard.orders') }}>
+                    </x-sidebar-link>
+                    <x-sidebar-link :active="request()->routeIs('dashboard.orders')" :href="route('dashboard.orders')">
                         <i class="fa-solid fa-file-lines w-1/6"></i>
                         <h5 class="flex-1">{{ __('dashboard.invoice') }}</h5>
-                    </a>
+                    </x-sidebar-link>
                 </div>
             </div>
             <main class="flex-1 h-[800px] p-8">
