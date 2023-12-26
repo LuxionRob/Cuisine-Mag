@@ -1,16 +1,28 @@
-import { MapContainer, Marker, TileLayer, Polygon } from 'react-leaflet'
+import { MapContainer, Marker, Polygon, TileLayer } from 'react-leaflet'
+import { getDensity, getRoad, getStore, getStores } from '../api/analyzeMap'
 import { useEffect, useState } from 'react'
+
+import { HeatMap } from '../components'
+import Leaflet from 'leaflet'
+import RoadMap from '../components/RoadMap'
 import { convex } from '@turf/turf'
 
-import { getStores, getStore, getDensity } from '../api/analyzeMap'
-import { HeatMap } from '../components'
-
 export default function AnalyzeMapPage() {
-    const position = [11.163194444396, 106.35736111134]
+    const corner1 = Leaflet.latLng(10.35, 106.33)
+    const corner2 = Leaflet.latLng(11.2, 107.05)
+    const maxBounds = Leaflet.latLngBounds(corner1, corner2)
+    const bounds = [
+        [10.35, 106.33],
+        [11.2, 107.05],
+    ]
     const [stores, setStores] = useState([])
     const [pointsAroundStore, setPointsAroundStore] = useState({})
     const [heatPoints, setHeatPoints] = useState([])
     const [densityLastPage, setDensityLastPage] = useState(1)
+    const [roads, setRoads] = useState({
+        type: 'FeatureCollection',
+        features: [],
+    })
 
     const fetchStores = async () => {
         try {
@@ -55,6 +67,24 @@ export default function AnalyzeMapPage() {
         } catch (error) {}
     }
 
+    const fecthRoad = async () => {
+        try {
+            const firstRes = await getRoad(1, 100)
+            const lastPage = firstRes.data.lastPage
+            setRoads(firstRes.data.geo)
+
+            let i = 2
+            while (i <= lastPage) {
+                setRoads((await getRoad(i)).data.geo)
+                ++i
+            }
+        } catch (error) {}
+    }
+
+    useEffect(() => {
+        fecthRoad()
+    }, [])
+
     useEffect(() => {
         fetchStores()
     }, [])
@@ -68,7 +98,14 @@ export default function AnalyzeMapPage() {
     }
 
     return (
-        <MapContainer center={position} zoom={13} scrollWheelZoom={true} className="h-96 w-full">
+        <MapContainer
+            bounds={bounds}
+            minZoom={9}
+            maxBounds={maxBounds}
+            scrollWheelZoom={true}
+            className="h-96 w-full"
+            zoomControl={false}
+        >
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -87,6 +124,7 @@ export default function AnalyzeMapPage() {
                 <Polygon positions={pointsAroundStore.geometry.coordinates} />
             )}
             <HeatMap points={heatPoints} />
+            {roads && <RoadMap roads={roads} />}
         </MapContainer>
     )
 }

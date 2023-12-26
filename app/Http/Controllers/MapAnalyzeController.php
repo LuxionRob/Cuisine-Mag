@@ -131,9 +131,8 @@ class MapAnalyzeController extends Controller
 
                 return [
                     "type" => "Feature",
-                    "geometry" => [
-                        $string->coordinates,
-                    ],
+                    "geometry" => 
+                      $string->coordinates,
                     "properties" => [
                         'type' => $string->type,
                     ],
