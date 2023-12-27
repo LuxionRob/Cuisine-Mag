@@ -16,9 +16,9 @@ class OrderSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 0; $i < 500; ++$i) {
+        for ($i = 0; $i < 50000; ++$i) {
             Order::create([
-                'contact_id' => rand(2, 10),
+                'contact_id' => rand(2, 2000),
             ]);
         }
     }

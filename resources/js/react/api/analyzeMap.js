@@ -19,3 +19,7 @@ export const getTopFive = () => {
 export const getRoad = (page, limit) => {
     return instance.get('roads', { params: { page, limit } })
 }
+
+export const getRevenueFromLocation = () => {
+    return instance.get('revenueByOrderLocation')
+}

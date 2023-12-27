@@ -1,5 +1,4 @@
 import Alpine from 'alpinejs'
-import lineChart from './dashboard/lineChart'
 
 window.Alpine = Alpine
 
@@ -11,7 +10,4 @@ window.$ = window.jQuery = $
 require('./customSelect')
 require('./product/quantity')
 require('./popUp')
-
-document.addEventListener('DOMContentLoaded', () => {
-    lineChart()
-})
+require('./user/create')

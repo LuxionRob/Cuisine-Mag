@@ -19,6 +19,7 @@ Route::prefix('api')->name('api.')->group(function () {
     Route::get('stores/{store}', [MapAnalyzeController::class, 'showStore'])->name('showStore');
     Route::get('density', [MapAnalyzeController::class, 'showDensity'])->name('showDensity');
     Route::get('roads', [MapAnalyzeController::class, 'showRoads'])->name('showRoads');
+    Route::get('revenueByOrderLocation', [MapAnalyzeController::class, 'getRevenueByOrderLocation']);
 });
 
 Route::prefix('api')->name('api.')->group(function () {

@@ -45,8 +45,7 @@
                             class="h-10 focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 focus:outline-none"
                             id="password" name="password" type="password">
                     </div>
-
-                    <!-- Add more input fields here -->
+                    <div id='create-store-page'></div> <!-- Add more input fields here -->
                     <button type="submit"
                         class="h-10 focus:shadow-outline rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 focus:outline-none">
                         {{ __('Create') }}

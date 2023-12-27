@@ -6,6 +6,7 @@ use App\Http\Requests\Contact\ContactRequest;
 use App\Models\Contact;
 use App\Models\Location;
 use App\Models\User;
+use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Support\Facades\Auth;
 
 class ContactController extends Controller
@@ -29,8 +30,8 @@ class ContactController extends Controller
     public function store(ContactRequest $request)
     {
         $validated = $request->validated();
-        $coordinates = ['x' => explode(',', $validated['location'])[0], 'y' => explode(',', $validated['location'])[1], 'detail' => $validated['address']];
-        $location = Location::create($coordinates);
+        $coordinates = new Point(explode(',', $validated['location'])[1], explode(',', $validated['location'])[0]);
+        $location = Location::create(['detail' => $validated['address'], 'coordinates' => $coordinates]);
         $contact = ['name' => $validated['name'], 'phone_number' => $validated['phone_number'], 'location_id' => $location->id, 'user_id' => Auth::id()];
         $contact = Contact::create($contact);
         $contact->save();
