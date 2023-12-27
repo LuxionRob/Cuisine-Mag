@@ -1,18 +1,13 @@
 import '../../../css/style.css'
 
-import { memo, useEffect } from 'react'
+import { memo, useEffect, useState } from 'react'
 
 import L from 'leaflet'
 import { useMap } from 'react-leaflet'
 
-function RoadMap({ roads }) {
+function RoadMap({ roads, toggleLayer }) {
     const map = useMap()
-
-    var myStyle = {
-        color: '#8d1812',
-        weight: 5,
-        opacity: 0.65,
-    }
+    // const [roadLayer, setRoadLayer] = useState()
 
     const onEachFeature = (feature, layer) => {
         switch (feature.properties.type) {
@@ -37,11 +32,6 @@ function RoadMap({ roads }) {
                 layer.options.color = '#cabaa2'
                 break
 
-            case 'footway':
-            case 'pedestrian':
-                layer.options.color = '#83fdd8'
-                break
-
             case 'service':
                 layer.options.color = '#d0d63f'
                 break
@@ -56,73 +46,8 @@ function RoadMap({ roads }) {
             case 'living_street':
                 layer.options.color = '#f5e9b7'
                 break
-
-            case 'motorway':
-            case 'motorway_link':
-            case 'cycleway':
-                layer.options.color = '#4d90fe'
-                break
-
-            case 'construction':
-                layer.options.color = '#c42b1c'
-                break
-
-            case 'proposed':
-                layer.options.color = '#60b79c'
-                break
-
-            case 'unclassified':
-                layer.options.color = '#b2b2b2'
-                break
         }
     }
-
-    // var legend = L.control({ position: 'bottomleft' })
-    // legend.onAdd = function (map) {
-    //     const div = L.DomUtil.create('div', 'info legend')
-    //     const labels = ['<strong>Categories</strong>']
-    //     const categories = [
-    //         'primary',
-    //         'secondary',
-    //         'tertiary',
-    //         'trunk',
-    //         'footway',
-    //         'service',
-    //         'residential',
-    //         'living_street',
-    //         'motorway',
-    //         'construction',
-    //         'proposed',
-    //         'unclassified',
-    //     ]
-
-    //     const colors = [
-    //         '#9e7fa9',
-    //         '#bba683',
-    //         '#d5b78a',
-    //         '#cabaa2',
-    //         '#83fdd8',
-    //         '#d0d63f',
-    //         '#e388bf',
-    //         '#f5e9b7',
-    //         '#4d90fe',
-    //         '#c42b1c',
-    //         '#60b79c',
-    //         '#b2b2b2',
-    //     ]
-
-    //     for (var i = 0; i < categories.length; i++) {
-    //         div.innerHTML += labels.push(
-    //             '<i class="circle" style="background:' +
-    //                 colors[i] +
-    //                 '"></i> ' +
-    //                 (categories[i] ? categories[i] : '+'),
-    //         )
-    //     }
-    //     div.innerHTML = labels.join('<br>')
-    //     return div
-    // }
-    // legend.addTo(map)
 
     useEffect(() => {
         var legend = L.control({ position: 'bottomleft' })
@@ -135,14 +60,9 @@ function RoadMap({ roads }) {
                 'secondary',
                 'tertiary',
                 'trunk',
-                'footway',
                 'service',
                 'residential',
                 'living_street',
-                'motorway',
-                'construction',
-                'proposed',
-                'unclassified',
             ]
 
             const colors = [
@@ -150,14 +70,9 @@ function RoadMap({ roads }) {
                 '#bba683',
                 '#d5b78a',
                 '#cabaa2',
-                '#83fdd8',
                 '#d0d63f',
                 '#e388bf',
                 '#f5e9b7',
-                '#4d90fe',
-                '#c42b1c',
-                '#60b79c',
-                '#b2b2b2',
             ]
 
             div.innerHTML += '<h4>Road type</h4>'
@@ -171,9 +86,27 @@ function RoadMap({ roads }) {
         legend.addTo(map)
     }, [])
 
+    // useEffect(() => {
+    //     var overlayMaps = {
+    //         Road: roadLayer,
+    //     }
+    //     var layerControl = L.control.layers(TileLayer, overlayMaps).addTo(map)
+    // }, [roadLayer])
+
     useEffect(() => {
-        const road = L.geoJson(roads, { onEachFeature: onEachFeature }).addTo(map)
+        var road = L.geoJSON(null, { onEachFeature: onEachFeature })
+        road.addTo(map)
+        road.addData(roads)
+        // setRoadLayer(road)
     }, [roads])
+
+    // useEffect(() => {
+    //     if (toggleLayer) {
+    //         L.map.removeLayer()
+    //     } else {
+    // map.addLayer(roadLayer)
+    //     }
+    // }, [toggleLayer])
 
     return null
 }

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 
 import { HeatMap } from '../components'
 import Leaflet from 'leaflet'
+import Polyc from '../components/Polyc'
 import RoadMap from '../components/RoadMap'
 import { convex } from '@turf/turf'
 
@@ -18,10 +19,19 @@ export default function AnalyzeMapPage() {
     const [stores, setStores] = useState([])
     const [pointsAroundStore, setPointsAroundStore] = useState({})
     const [heatPoints, setHeatPoints] = useState([])
+    // const [toggleLayer, setToggleLayer] = useState(true)
     const [densityLastPage, setDensityLastPage] = useState(1)
     const [roads, setRoads] = useState({
         type: 'FeatureCollection',
         features: [],
+    })
+    const [poly, setPoly] = useState({
+        type: 'Feature',
+        properties: {},
+        geometry: {
+            type: 'Polygon',
+            coordinates: [],
+        },
     })
 
     const fetchStores = async () => {
@@ -69,7 +79,7 @@ export default function AnalyzeMapPage() {
 
     const fecthRoad = async () => {
         try {
-            const firstRes = await getRoad(1, 100)
+            const firstRes = await getRoad(1)
             const lastPage = firstRes.data.lastPage
             setRoads(firstRes.data.geo)
 
@@ -80,6 +90,26 @@ export default function AnalyzeMapPage() {
             }
         } catch (error) {}
     }
+
+    // const fetchDensity_1 = async () => {
+    //     try {
+    //         const firstRes = await getDensity(1, null)
+    //         const lastPage = firstRes.data.lastPage
+    //         let polygon = convex(firstRes.data.geo)
+    //         setPoly(polygon)
+
+    //         let i = 2
+    //         while (i <= lastPage) {
+    //             console.log(i + ' / ' + lastPage)
+    //             setPoly(convex((await getDensity(i)).data.geo))
+    //             ++i
+    //         }
+    //     } catch (error) {}
+    // }
+
+    // useEffect(() => {
+    //     fetchDensity_1()
+    // }, [])
 
     useEffect(() => {
         fecthRoad()
@@ -97,34 +127,44 @@ export default function AnalyzeMapPage() {
         fetchStore(e.target.options.data)
     }
 
+    // const handleClick = e => {
+    //     e.preventDefault()
+    //     setToggleLayer(!toggleLayer)
+    //     console.log(toggleLayer)
+    // }
+
     return (
-        <MapContainer
-            bounds={bounds}
-            minZoom={9}
-            maxBounds={maxBounds}
-            scrollWheelZoom={true}
-            className="h-96 w-full"
-            zoomControl={false}
-        >
-            <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            {stores.map(store => (
-                <Marker
-                    eventHandlers={{
-                        click: handleMarkerClick,
-                    }}
-                    key={store.id}
-                    data={store.id}
-                    position={[store.y, store.x]}
-                ></Marker>
-            ))}
-            {pointsAroundStore?.type && (
-                <Polygon positions={pointsAroundStore.geometry.coordinates} />
-            )}
-            <HeatMap points={heatPoints} />
-            {roads && <RoadMap roads={roads} />}
-        </MapContainer>
+        <>
+            <MapContainer
+                bounds={bounds}
+                minZoom={9}
+                maxBounds={maxBounds}
+                scrollWheelZoom={true}
+                className="h-96 w-full"
+                zoomControl={false}
+            >
+                {/* <Polyc poly={poly} /> */}
+                <TileLayer
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                {stores.map(store => (
+                    <Marker
+                        eventHandlers={{
+                            click: handleMarkerClick,
+                        }}
+                        key={store.id}
+                        data={store.id}
+                        position={[store.y, store.x]}
+                    ></Marker>
+                ))}
+                {pointsAroundStore?.type && (
+                    <Polygon positions={pointsAroundStore.geometry.coordinates} />
+                )}
+                <HeatMap points={heatPoints} />
+                <RoadMap roads={roads} />
+            </MapContainer>
+            {/* <button onClick={handleClick}>click</button> */}
+        </>
     )
 }
