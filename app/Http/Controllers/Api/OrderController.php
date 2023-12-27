@@ -26,9 +26,17 @@ class OrderController extends Controller
         $page = $request->input('page');
         $orderCol = $request->input('order');
         $orderDirection = $request->input('direction');
+        $status = $request->input('status');
 
-        $orders = Order::with('orderItems', 'contact')
-            ->orderBy($orderCol ?? 'id', $orderDirection ?? 'desc')
+
+        $orders = Order::with('orderItems.product', 'contact');
+        if ($status != 'ALL') {
+            $orders = $orders->whereHas('orderItems', function ($q) use ($status) {
+                $q->where('status', '=', $status);
+            });
+        }
+
+        $orders = $orders->orderBy($orderCol ?? 'id', $orderDirection ?? 'desc')
             ->paginate($limit ?? self::DEFAULT_LIMIT, ['*'], 'page', $page ?? 1);
 
         return response()->json($orders);
@@ -72,23 +80,18 @@ class OrderController extends Controller
         return response()->json($order, Response::HTTP_OK);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Order $order)
     {
+        $status = $request->input('status');
+
         $order->load('orderItems');
         foreach ($order->orderItems as $item) {
-            $item->status = $request->status;
+            $item->status = $status;
             $item->save();
         }
         $order->save();
 
-        return response()->json($order, Response::HTTP_OK);
+        return response()->json($order);
     }
 
     /**
