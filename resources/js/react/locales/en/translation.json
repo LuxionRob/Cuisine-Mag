@@ -1,5 +1,6 @@
 {
     "contact.Name": "Name",
+    "contact.StoreName": "Store Name",
     "contact.Address": "Address",
     "contact.Phone number": "Phone number",
     "contact.location": "Location",

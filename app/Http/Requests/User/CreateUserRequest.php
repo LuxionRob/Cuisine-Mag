@@ -17,11 +17,6 @@ class CreateUserRequest extends FormRequest
         return Auth::user()->role === UserRole::ROLE_ADMIN;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
-     */
     public function rules(): array
     {
         return [
@@ -30,6 +25,9 @@ class CreateUserRequest extends FormRequest
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|max:255',
             'role' => Rule::in(UserRole::$types),
+            'name' => 'string|max:255',
+            'address' => 'string|max:255',
+            "location" => "required|string",
         ];
     }
 }

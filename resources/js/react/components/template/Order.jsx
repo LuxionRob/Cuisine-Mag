@@ -144,14 +144,16 @@ const Order = () => {
 
                               <div className="flex items-center justify-center p-2.5 xl:p-5">
                                   <p className="text-meta-3">
-                                      <a href={'/orders/' + i.id}>{i.order_items.values()}</a>
+                                      <a href={'/orders/' + i.id}>
+                                          {i.order_items[0].payment_method}
+                                      </a>
                                   </p>
                               </div>
                               <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
                                   <p className="text-meta-5">{i.created_at}</p>
                               </div>
                               <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
-                                  {/* {i.order_items[0].status === 'WAITING' && (
+                                  {i.order_items[0].status === 'WAITING' && (
                                       <button
                                           className="button primary mr-1 text-center"
                                           onClick={() => handleOnClick(i.id, 'PACKAGING')}
@@ -160,15 +162,15 @@ const Order = () => {
                                       </button>
                                   )}
                                   {['WAITING', 'PACKAGING', 'PACKAGED'].indexOf(
-                                      i.order_items[0].status >= 0,
-                                  ) && (
+                                      i.order_items[0].status,
+                                  ) >= 0 ? (
                                       <button
                                           className="button delete text-center"
                                           onClick={() => handleOnClick(i.id, 'CANCELED')}
                                       >
                                           Huỷ đơn
                                       </button>
-                                  )} */}
+                                  ) : null}
                               </div>
                           </div>
                       ))

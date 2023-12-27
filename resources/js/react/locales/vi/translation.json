@@ -1,6 +1,7 @@
 {
     "contact.Name": "Tên",
     "contact.Address": "Địa chỉ",
+    "contact.StoreName": "Tên cửa hàng",
     "contact.Phone number": "Số điện thoại",
     "contact.location": "Vị trí",
     "contact.create.button": "Thêm địa chỉ",

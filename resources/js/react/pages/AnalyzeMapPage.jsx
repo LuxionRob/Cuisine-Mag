@@ -1,26 +1,28 @@
 import { MapContainer, Marker, Polygon, TileLayer } from 'react-leaflet'
-import { getDensity, getRoad, getStore, getStores } from '../api/analyzeMap'
+import { getDensity, getRoad, getStore, getStores, getRevenueFromLocation } from '../api/analyzeMap'
 import { useEffect, useState } from 'react'
 
 import { HeatMap } from '../components'
 import Leaflet from 'leaflet'
-import Polyc from '../components/Polyc'
-import RoadMap from '../components/RoadMap'
-import { convex } from '@turf/turf'
+import { RoadMap, InterpolateRevenue } from '../components'
+import { convex, interpolate } from '@turf/turf'
 
 export default function AnalyzeMapPage() {
-    const corner1 = Leaflet.latLng(10.35, 106.33)
+    const corner1 = Leaflet.latLng(11, 106.33)
     const corner2 = Leaflet.latLng(11.2, 107.05)
+
     const maxBounds = Leaflet.latLngBounds(corner1, corner2)
+
     const bounds = [
-        [10.35, 106.33],
+        [11, 106.33],
         [11.2, 107.05],
     ]
+
     const [stores, setStores] = useState([])
     const [pointsAroundStore, setPointsAroundStore] = useState({})
     const [heatPoints, setHeatPoints] = useState([])
+    const [interpolateRevenue, setInterpolateRevenue] = useState({})
     // const [toggleLayer, setToggleLayer] = useState(true)
-    const [densityLastPage, setDensityLastPage] = useState(1)
     const [roads, setRoads] = useState({
         type: 'FeatureCollection',
         features: [],
@@ -57,8 +59,8 @@ export default function AnalyzeMapPage() {
             const firstRes = await getDensity(1, null)
 
             const points = firstRes.data.geo.features.map(p => [
-                p.geometry.coordinates[0],
                 p.geometry.coordinates[1],
+                p.geometry.coordinates[0],
                 p.properties.populationDensity / 6.0,
             ])
 
@@ -67,8 +69,8 @@ export default function AnalyzeMapPage() {
             new Array(firstRes.data.lastPage - 1).fill(0).map((e, i) =>
                 getDensity(i + 2, null).then(res => {
                     const points = res.data.geo.features.map(p => [
-                        p.geometry.coordinates[0],
                         p.geometry.coordinates[1],
+                        p.geometry.coordinates[0],
                         p.properties.populationDensity / 6.0,
                     ])
                     setHeatPoints(n => [...n, ...points])
@@ -77,7 +79,7 @@ export default function AnalyzeMapPage() {
         } catch (error) {}
     }
 
-    const fecthRoad = async () => {
+    const fetchRoad = async () => {
         try {
             const firstRes = await getRoad(1)
             const lastPage = firstRes.data.lastPage
@@ -106,21 +108,22 @@ export default function AnalyzeMapPage() {
     //         }
     //     } catch (error) {}
     // }
-
-    // useEffect(() => {
-    //     fetchDensity_1()
-    // }, [])
-
-    useEffect(() => {
-        fecthRoad()
-    }, [])
-
+    const fetchInterpolate = () => {
+        getRevenueFromLocation().then(res => {
+            const interpolatedPoly = interpolate(res.data, 1000, {
+                gridType: 'square',
+                property: 'revenue',
+                units: 'meters',
+                weight: 5,
+            })
+            setInterpolateRevenue(interpolatedPoly)
+        })
+    }
     useEffect(() => {
         fetchStores()
-    }, [])
-
-    useEffect(() => {
+        fetchRoad()
         fetchDensity()
+        fetchInterpolate()
     }, [])
 
     const handleMarkerClick = e => {
@@ -137,7 +140,7 @@ export default function AnalyzeMapPage() {
         <>
             <MapContainer
                 bounds={bounds}
-                minZoom={9}
+                minZoom={11}
                 maxBounds={maxBounds}
                 scrollWheelZoom={true}
                 className="h-96 w-full"
@@ -145,6 +148,7 @@ export default function AnalyzeMapPage() {
             >
                 {/* <Polyc poly={poly} /> */}
                 <TileLayer
+                    zoom={11}
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
@@ -162,7 +166,8 @@ export default function AnalyzeMapPage() {
                     <Polygon positions={pointsAroundStore.geometry.coordinates} />
                 )}
                 <HeatMap points={heatPoints} />
-                <RoadMap roads={roads} />
+                {/* <RoadMap roads={roads} /> */}
+                {/* {interpolateRevenue?.type ? <InterpolateRevenue data={interpolateRevenue} /> : null} */}
             </MapContainer>
             {/* <button onClick={handleClick}>click</button> */}
         </>

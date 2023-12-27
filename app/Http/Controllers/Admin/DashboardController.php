@@ -213,6 +213,7 @@ class DashboardController extends Controller
 
         return response()->json($query->get());
     }
+
     private function getGrowth($t, $y)
     {
         if ($y == 0 && $t == 0) {
@@ -225,7 +226,6 @@ class DashboardController extends Controller
             return round($t / $y * 100, 2);
         }
     }
-
 
     public function showProducts(Request $request)
     {

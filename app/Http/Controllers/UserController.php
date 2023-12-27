@@ -6,8 +6,11 @@ use App\Enums\UserRole;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\DeleteUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
+use App\Models\Location;
 use App\Models\Order;
+use App\Models\Store;
 use App\Models\User;
+use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -62,7 +65,16 @@ class UserController extends Controller
         $user->password = bcrypt($validated['password']);
         $user->role = $validated['role'];
         $user->is_active = true;
+
         $user->save();
+
+        if ($user->role == UserRole::ROLE_SALESMAN) {
+            $coordinates = new Point(explode(',', $validated['location'])[0], explode(',', $validated['location'])[1]);
+            $location = Location::create(['detail' => $validated['address'], 'coordinates' => $coordinates]);
+            $store = Store::create(['name' => $validated['name'], 'location_id' => $location->id, 'owner_id' => $user->id]);
+            $location->save();
+            $store->save();
+        }
 
         return redirect()->route('users.index')->with('success', trans('user.store.success'));
     }
