@@ -28,8 +28,12 @@ class MapAnalyzeController extends Controller
         return $storesWithLocation;
     }
     private function haversineGreatCircleDistance(
-        $latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371000)
-    {
+        $latitudeFrom,
+        $longitudeFrom,
+        $latitudeTo,
+        $longitudeTo,
+        $earthRadius = 6371000
+    ) {
         // convert from degrees to radians
         $latFrom = deg2rad($latitudeFrom);
         $lonFrom = deg2rad($longitudeFrom);
@@ -64,7 +68,8 @@ class MapAnalyzeController extends Controller
                             $point->coordinates->getLat(),
                             $point->coordinates->getLng(),
                             $store->location->coordinates->getLat(),
-                            $store->location->coordinates->getLng(), 6371000
+                            $store->location->coordinates->getLng(),
+                            6371000
                         ),
                         'populationDensity' => $point->density,
                     ],
@@ -97,7 +102,7 @@ class MapAnalyzeController extends Controller
                     "type" => "Feature",
                     "geometry" => [
                         "type" => "Point",
-                        "coordinates" => [$point->coordinates->getLat(), $point->coordinates->getLng()],
+                        "coordinates" => [$point->coordinates->getLng(), $point->coordinates->getLat()],
                     ],
                     "properties" => [
                         'populationDensity' => $point->density,
@@ -116,7 +121,6 @@ class MapAnalyzeController extends Controller
     {
         $page = $request->input('page');
         $limit = $request->input('limit');
-
         $multiString = Road::paginate($limit ?? self::DEFAULT_LIMIT, ['*'], 'page', $page ?? 1);
 
         if ($page > $multiString->lastPage()) {
@@ -128,16 +132,30 @@ class MapAnalyzeController extends Controller
         $geojs = [
             "type" => "FeatureCollection",
             "features" => $multiString->map(function ($string) {
-
-                return [
-                    "type" => "Feature",
-                    "geometry" => 
-                      $string->coordinates,
-                    "properties" => [
-                        'type' => $string->type,
-                    ],
+                $filterArray = [
+                    'footway',
+                    'pedestrian',
+                    'motorway',
+                    'motorway_link',
+                    'cycleway',
+                    'construction',
+                    'proposed',
+                    'unclassified'
                 ];
-            })
+
+                if (!in_array($string->type, $filterArray)) {
+                    return [
+                        "type" => "Feature",
+                        "geometry" =>
+                        $string->coordinates,
+                        "properties" => [
+                            'type' => $string->type,
+                        ],
+                    ];
+                }
+            })->filter(function ($value) {
+                return $value != null;
+            })->values()
         ];
         $response['geo'] = $geojs;
         $response['lastPage'] = $multiString->lastPage();
