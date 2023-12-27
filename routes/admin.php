@@ -24,9 +24,9 @@ Route::prefix('api')->name('api.')->group(function () {
 Route::prefix('api')->name('api.')->group(function () {
     Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
-    Route::patch('orders/{order}', [OrderController::class, 'update'])->name('orders.update');
     Route::delete('orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
     Route::get('group-orders', [OrderController::class, 'groupIndex'])->name('orders.groupIndex');
+    Route::get('/orders/{order}/update', [OrderController::class, 'update'])->name('orders.update');
 });
 
 Route::prefix('api')->name('api.')->group(function () {

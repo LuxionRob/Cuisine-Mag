@@ -97,7 +97,7 @@
                                         <i class="fa fa-regular fa-star text-yellow-500"></i>
                                     @endfor
                                 </div>
-                                <button type="submit" class="px-4 bg-blue-500 h-12">
+                                <button type="submit" class="rounded px-4 bg-blue-400 h-12">
                                     {{ __('product.show.comment') }}
                                 </button>
                             </div>
@@ -143,8 +143,16 @@
                                         </div>
                                         <div class="ml-4 flex flex-col justify-between">
                                             <input type="hidden" name="id" value="{{ $sameUserProduct->id }}" />
-                                            <div class="text-xl font-bold">{{ $sameUserProduct->name }}</div>
-                                            <div class="text-3xl text-red-600 font-bold mb-4">{{ $sameUserProduct->price }} $</div>
+                                            <div class="flex justify-between items-center">
+                                                <div class="text-xl font-bold">{{ $sameUserProduct->name }}</div>
+                                                <div class="text-3xl text-red-600 font-bold">{{ $sameUserProduct->price }} $</div>
+                                            </div>
+                                            <div class="flex justify-between items-center">
+                                                <div class="max-h-14 text-ellipsis overflow-hidden text-sm text-gray-500 mr-2">{{ $sameUserProduct->description }}</div>
+                                                <button class="rounded-full h-10 bg-blue-300 hover:bg-blue-400" type="submit">
+                                                    <i class="fa fa-cart-plus w-10"></i>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
 

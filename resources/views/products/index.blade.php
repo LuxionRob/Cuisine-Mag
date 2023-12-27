@@ -64,11 +64,11 @@
                                     </div>
                                 </a>
 
-                                <div class="flex justify-between">
-                                    <div class="mb-4 px-6 text-xl font-bold text-red-600">
+                                <div class="flex justify-between items-center px-6 mb-4">
+                                    <div class="text-xl font-bold text-red-600">
                                         {{ formatCurrency($product->price) }}</div>
-                                    <button class="mb-4 px-6" type="submit">
-                                        <i class="fa fa-cart-plus"></i>
+                                    <button class="rounded-full h-10 bg-blue-300 hover:bg-blue-400" type="submit">
+                                        <i class="fa fa-cart-plus w-10"></i>
                                     </button>
                                 </div>
 

@@ -3,11 +3,12 @@ import CardThree from '../../components/template/CardThree.jsx'
 import CardTwo from '../../components/template/CardTwo.jsx'
 import ChartOne from '../../components/template/ChartOne'
 import ChartThree from '../../components/template/ChartThree'
+import Order from '../../components/template/Order.jsx'
 
 const ECommerce = () => {
     return (
-        <>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7.5">
+        <div className="h-full overflow-y-scroll">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7.5 ">
                 <CardTwo />
                 <CardThree />
                 <CardFour />
@@ -17,7 +18,10 @@ const ECommerce = () => {
                 <ChartOne />
                 <ChartThree />
             </div>
-        </>
+            <div className="mt-4">
+                <Order />
+            </div>
+        </div>
     )
 }
 

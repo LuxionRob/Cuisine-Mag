@@ -39,3 +39,12 @@ export const deleteUser = id => {
 export const getUserById = id => {
     return instance.get('users/' + id)
 }
+
+export const getOrderWithStatus = status => {
+    return instance.get('orders', { params: { status } })
+}
+
+export const updateOrderStatus = (id, status) => {
+    console.log(id, status)
+    return instance.get('orders/' + id + '/update', { params: { status } })
+}
