@@ -10,4 +10,9 @@ final class UserRole extends Enum
     const ROLE_USER = 'USER';
     const ROLE_SALESMAN = 'SALESMAN';
     public static $types = [self::ROLE_ADMIN, self::ROLE_USER, self::ROLE_SALESMAN];
+
+    public static function isContain($value)
+    {
+        return in_array($value, self::$types);
+    }
 }

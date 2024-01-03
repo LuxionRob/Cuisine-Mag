@@ -1,18 +1,18 @@
 import { useEffect } from 'react'
 import { Marker, Popup, useMap } from 'react-leaflet'
 
-export default function CustomMarker({ marker }) {
+export default function CustomMarker({ isShow, coordinates }) {
     const map = useMap()
 
     useEffect(() => {
-        if (marker.isShow) {
-            map.flyTo([marker.x, marker.y], map.getZoom())
+        if (isShow) {
+            map.flyTo(coordinates, map.getZoom(), { animate: false })
         }
-    }, [marker.x])
+    }, [coordinates])
 
     return (
-        marker.isShow && (
-            <Marker position={[marker.x, marker.y]}>
+        isShow && (
+            <Marker position={coordinates}>
                 <Popup>
                     A pretty CSS3 popup. <br /> Easily customizable.
                 </Popup>

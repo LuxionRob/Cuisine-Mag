@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 
 import { HeatMap } from '../components'
 import Leaflet from 'leaflet'
-import { RoadMap, InterpolateRevenue } from '../components'
+import { RoadMap, InterpolateRevenue, MapContextMenu } from '../components'
 import { convex, interpolate } from '@turf/turf'
 
 export default function AnalyzeMapPage() {
@@ -55,7 +55,6 @@ export default function AnalyzeMapPage() {
 
     const fetchDensity = async () => {
         try {
-            let result = heatPoints
             const firstRes = await getDensity(1, null)
 
             const points = firstRes.data.geo.features.map(p => [
@@ -160,11 +159,12 @@ export default function AnalyzeMapPage() {
                         key={store.id}
                         data={store.id}
                         position={[store.y, store.x]}
-                    ></Marker>
+                    />
                 ))}
                 {pointsAroundStore?.type && (
                     <Polygon positions={pointsAroundStore.geometry.coordinates} />
                 )}
+                <MapContextMenu />
                 <HeatMap points={heatPoints} />
                 <RoadMap roads={roads} />
                 {/* {interpolateRevenue?.type ? <InterpolateRevenue data={interpolateRevenue} /> : null} */}

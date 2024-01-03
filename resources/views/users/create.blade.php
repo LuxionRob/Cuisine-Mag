@@ -19,7 +19,10 @@
                             <label class="mb-2 block text-sm font-bold text-gray-700" for="role">Role</label>
                             <select name="role" id="role" class="w-full rounded py-2 h-10">
                                 @foreach (App\Enums\UserRole::$types as $role)
-                                    <option value="{{ $role }}">{{ $role }}</option>
+                                    <option @if ($selectedRole === $role) selected @endif
+                                        value="{{ $role }}">
+                                        {{ $role }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>

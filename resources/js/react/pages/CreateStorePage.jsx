@@ -1,13 +1,15 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MapDetermination } from '../components'
 import { EsriProvider } from 'leaflet-geosearch'
+import 'leaflet-control-geocoder/dist/Control.Geocoder.css'
+import 'leaflet-control-geocoder/dist/Control.Geocoder.js'
 
 export default function CreateStorePage() {
     const { t } = useTranslation()
     const [address, setAddress] = useState('')
     const [name, setName] = useState('')
-    const [coordinates, setCoordinates] = useState({ x: 0, y: 0 })
+    const [coordinates, setCoordinates] = useState([0, 0])
     const [showMarker, setShowMarker] = useState(false)
     const provider = new EsriProvider()
 
@@ -17,14 +19,37 @@ export default function CreateStorePage() {
 
     const handleAddressChange = e => {
         provider.search({ query: e.target.value }).then(result => {
-            setCoordinates({ x: result[0].y, y: result[0].x })
+            setCoordinates([result[0].y, result[0].x])
             setShowMarker(!showMarker)
         })
         setAddress(e.target.value)
     }
+
+    useEffect(() => {
+        const queryString = window.location.href
+        const urlParams = new URLSearchParams(queryString)
+
+        if (urlParams.size === 3) {
+            fetch(
+                'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=pjson&langCode=EN&location=' +
+                    urlParams.get('lng') +
+                    ',' +
+                    urlParams.get('lat'),
+            )
+                .then(result => result.json())
+                .then(result => {
+                    setShowMarker(true)
+                    setCoordinates([urlParams.get('lat'), urlParams.get('lng')])
+                    setAddress(result.address.Match_addr)
+                })
+        }
+    }, [])
+
     return (
         <>
-            <label htmlFor="name">{t('contact.StoreName')}</label>
+            <label className="mr-1 block text-sm font-bold text-gray-700" htmlFor="name">
+                {t('contact.StoreName')}:
+            </label>
             <input
                 type="text"
                 id="name"
@@ -33,7 +58,9 @@ export default function CreateStorePage() {
                 onChange={handleNameChange}
                 value={name}
             />
-            <label htmlFor="address">{t('contact.Address')}</label>
+            <label className="mr-1 block text-sm font-bold text-gray-700" htmlFor="address">
+                {t('contact.Address')}:
+            </label>
             <input
                 type="text"
                 id="address"
@@ -42,8 +69,10 @@ export default function CreateStorePage() {
                 onChange={handleAddressChange}
                 value={address}
             />
-            <label>{t('contact.location')}</label>
-            <MapDetermination provider={provider} marker={{ isShow: showMarker, ...coordinates }} />
+            <label className="mr-1 block text-sm font-bold text-gray-700">
+                {t('contact.location')}:
+            </label>
+            <MapDetermination provider={provider} marker={{ isShow: showMarker, coordinates }} />
             <input type="hidden" name="location" value={Object.values(coordinates)} />
         </>
     )
