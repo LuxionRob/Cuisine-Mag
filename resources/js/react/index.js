@@ -16,18 +16,22 @@ if (document.getElementById('create-contact-form')) {
 }
 
 if (document.querySelector('select#role')) {
-    document.querySelector('select#role').addEventListener('change', function (e) {
-        if (e.target.value === 'SALESMAN') {
+    const render = e => {
+        const root = ReactDOM.createRoot(document.getElementById('create-store-page'))
+        if (document.querySelector('select#role').value === 'SALESMAN') {
             if (document.getElementById('create-store-page')) {
-                const root = ReactDOM.createRoot(document.getElementById('create-store-page'))
                 root.render(
                     <I18nextProvider lng="vi" i18n={i18n}>
                         <CreateStorePage />
                     </I18nextProvider>,
                 )
             }
+        } else {
+            root.unmount()
         }
-    })
+    }
+    document.querySelector('select#role').addEventListener('change', render)
+    window.addEventListener('load', render)
 }
 
 if (document.getElementById('analyze-map')) {

@@ -45,6 +45,5 @@ export const getOrderWithStatus = status => {
 }
 
 export const updateOrderStatus = (id, status) => {
-    console.log(id, status)
     return instance.get('orders/' + id + '/update', { params: { status } })
 }

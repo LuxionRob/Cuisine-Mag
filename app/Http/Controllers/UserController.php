@@ -13,6 +13,7 @@ use App\Models\User;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -50,9 +51,15 @@ class UserController extends Controller
         return view('users.products')->with('products', $products);
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        return view('users.create');
+        $defaultRole = $request->input('role');
+        $defaultRole = Str::upper($defaultRole);
+        if (!UserRole::isContain($defaultRole)) {
+            $defaultRole = UserRole::ROLE_USER;
+        }
+
+        return view('users.create')->with('selectedRole', $defaultRole);
     }
 
     public function store(CreateUserRequest $request)

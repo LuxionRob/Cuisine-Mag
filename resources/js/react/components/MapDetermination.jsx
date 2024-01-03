@@ -5,7 +5,7 @@ import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 import { SearchBar, CustomMarker, UserLocationMarker } from './index'
 
 export default function MapDetermination({ provider, marker }) {
-    const position = [10, 106]
+    const position = marker.coordinates
     const [isShowUserLocation, setIsShowUserLocation] = useState(false)
 
     const handleUserLocation = e => {
@@ -21,7 +21,7 @@ export default function MapDetermination({ provider, marker }) {
             <SearchBar provider={provider} />
             {/* <button onClick={handleUserLocation}>O</button>
             {isShowUserLocation && <UserLocationMarker />} */}
-            <CustomMarker marker={marker} />
+            <CustomMarker isShow={marker.isShow} coordinates={marker.coordinates} />
         </MapContainer>
     )
 }
