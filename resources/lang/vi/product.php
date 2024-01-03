@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'warn' => 'Vui lòng đăng nhập để mua hàng',
     'index' => [
         'sold' => 'Đã bán: ',
         'title' => 'Danh sách sản phẩm',

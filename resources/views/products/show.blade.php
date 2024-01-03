@@ -29,7 +29,7 @@
                                     <p class="text-center">{{ __('product.show.ratePoint') }}</p>
                                     <div class="text-center">
                                         @for ($i = 1; $i <= 5; $i++)
-                                            @if($i < $product->rate)
+                                            @if ($i < $product->rate)
                                                 <i class="fa fa-solid fa-star text-yellow-500"></i>
                                             @elseif($i > $product->rate && $i - 1 < $product->rate)
                                                 <i class="fa fa-solid fa-star-half-stroke text-yellow-500"></i>
@@ -53,7 +53,8 @@
 
                             <div>
                                 <div class="font-bold text-xl mb-4">{{ __('product.show.description') }}</div>
-                                <div class="w-full h-32 bg-gray-200 text-gray-700 rounded-l border-2 border-gray-300 p-4 ">
+                                <div
+                                    class="w-full h-32 bg-gray-200 text-gray-700 rounded-l border-2 border-gray-300 p-4 ">
                                     {{ $product->description }}
                                 </div>
                             </div>
@@ -61,67 +62,86 @@
                             <div class="flex items-center mt-4">
                                 <div class="text-gray-500 text-base mr-2">{{ __('product.show.quantity') }}</div>
 
-                                <button type="button" class="minus-btn w-1/12 p-1 bg-gray-300 hover:bg-gray-400 rounded-l">
+                                <button type="button"
+                                    class="minus-btn w-1/12 p-1 bg-gray-300 hover:bg-gray-400 rounded-l">
                                     <span class="text-sm font-semibold">-</span>
                                 </button>
                                 <input name="quantity" data-max="{{ $product->number_in_stock }}" type="text"
-                                    class="quantity-input w-1/6 text-center border border-gray-300 px-2 py-1" value="1" readonly>
-                                <button type="button" class="plus-btn w-1/12 p-1 bg-gray-300 hover:bg-gray-400 rounded-r">
+                                    class="quantity-input w-1/6 text-center border border-gray-300 px-2 py-1"
+                                    value="1" readonly>
+                                <button type="button"
+                                    class="plus-btn w-1/12 p-1 bg-gray-300 hover:bg-gray-400 rounded-r">
                                     <span class="text-sm font-semibold">+</span>
                                 </button>
 
-                                <div class="text-gray-500 text-base ml-2">{{ __('product.show.outOff') }}{{ $product->number_in_stock }}{{ __('product.show.productAvailable') }}</div>
+                                <div class="text-gray-500 text-base ml-2">
+                                    {{ __('product.show.outOff') }}{{ $product->number_in_stock }}{{ __('product.show.productAvailable') }}
+                                </div>
                             </div>
 
                             <div class="w-full">
-                                <button id="addToCartBtn" type="submit" class="px-6 mt-2 container p-2 bg-red-200 h-12 border-2 border-red-400">
-                                    <i class="fa fa-cart-plus"></i>
-                                    {{ __('product.show.addCart') }}
-                                </button>
+                                @if (Auth::check())
+                                    <button id="addToCartBtn" type="submit"
+                                        class="px-6 mt-2 container p-2 bg-red-200 h-12 border-2 border-red-400">
+                                        <i class="fa fa-cart-plus"></i>
+                                        {{ __('product.show.addCart') }}
+                                    </button>
+                                @else
+                                    <div class="px-6 mt-2 container p-2 bg-red-200 h-12 border-2 border-red-400">
+                                        {{ __('product.warn') }}
+                                    </div>
+                                @endif
+
                             </div>
                         </div>
                     </div>
                 </form>
 
-                <div class="mt-12 bg-white p-4 rounded">
-                    <div class="font-bold text-2xl mb-8">{{ __('product.show.comment') }}</div>
-                    <form method="post" action="{{ route('product.review.store', ['id' => $product->id]) }}" class="flex space-x-4 pb-4">
-                        @csrf    
-                        <img class="w-8 h-8" src="https://cdn-icons-png.flaticon.com/512/64/64572.png" alt="user profile">
-                        <div class="flex flex-col w-full">
-                            <input class="w-full border-0 focus:shadow-none border-b-2 border-gray-400" type="text" name="review" placeholder="{{ __('product.show.comment') }}"/>
-                            <input type="hidden" name="rating" id="rating" value="{{ old('rating') }}">
-                            <div class="mt-2 flex justify-between items-center">
-                                <div id="ratingStars">
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        <i class="fa fa-regular fa-star text-yellow-500"></i>
-                                    @endfor
-                                </div>
-                                <button type="submit" class="rounded px-4 bg-blue-400 h-12">
-                                    {{ __('product.show.comment') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                    @foreach ($reviews as $index => $review)
-                        <div class="flex space-x-4 p-4 border-t border-gray-200">
-                            <img class="w-8 h-8" src="https://cdn-icons-png.flaticon.com/512/64/64572.png" alt="user profile">
-                            <div class="flex flex-col">
-                                <div class="text-xl font-bold">{{ $review->user->username }}</div>
-                                <div class="text-base text-gray-500">{{ __('product.show.qualityRating') }}
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        @if($i > $review->rate)
+                @auth
+                    <div class="mt-12 bg-white p-4 rounded">
+                        <div class="font-bold text-2xl mb-8">{{ __('product.show.comment') }}</div>
+                        <form method="post" action="{{ route('product.review.store', ['id' => $product->id]) }}"
+                            class="flex space-x-4 pb-4">
+                            @csrf
+                            <img class="w-8 h-8" src="https://cdn-icons-png.flaticon.com/512/64/64572.png"
+                                alt="user profile">
+                            <div class="flex flex-col w-full">
+                                <input class="w-full border-0 focus:shadow-none border-b-2 border-gray-400" type="text"
+                                    name="review" placeholder="{{ __('product.show.comment') }}" />
+                                <input type="hidden" name="rating" id="rating" value="{{ old('rating') }}">
+                                <div class="mt-2 flex justify-between items-center">
+                                    <div id="ratingStars">
+                                        @for ($i = 1; $i <= 5; $i++)
                                             <i class="fa fa-regular fa-star text-yellow-500"></i>
-                                        @else
-                                            <i class="fa fa-solid fa-star text-yellow-500"></i>
-                                        @endif
-                                    @endfor
+                                        @endfor
+                                    </div>
+                                    <button type="submit" class="rounded px-4 bg-blue-400 h-12">
+                                        {{ __('product.show.comment') }}
+                                    </button>
                                 </div>
-                                <div class="mt-4 text-base pr-4 mb-4">{{ $review->content }}</div>
                             </div>
-                        </div>
-                    @endforeach
-                </div>
+                        </form>
+                        @foreach ($reviews as $index => $review)
+                            <div class="flex space-x-4 p-4 border-t border-gray-200">
+                                <img class="w-8 h-8" src="https://cdn-icons-png.flaticon.com/512/64/64572.png"
+                                    alt="user profile">
+                                <div class="flex flex-col">
+                                    <div class="text-xl font-bold">{{ $review->user->username }}</div>
+                                    <div class="text-base text-gray-500">{{ __('product.show.qualityRating') }}
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            @if ($i > $review->rate)
+                                                <i class="fa fa-regular fa-star text-yellow-500"></i>
+                                            @else
+                                                <i class="fa fa-solid fa-star text-yellow-500"></i>
+                                            @endif
+                                        @endfor
+                                    </div>
+                                    <div class="mt-4 text-base pr-4 mb-4">{{ $review->content }}</div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @endauth
             </div>
             @if ($sameUserProducts->isEmpty())
                 <div class="text-xl text-gray-500">{{ __('product.show.message') }}</div>
@@ -136,23 +156,19 @@
                                     <div class="flex">
                                         <div class="flex items-center">
                                             @if (strpos($sameUserProduct->photo, 'https://via.placeholder.com/') === 0)
-                                                <img class="w-28 h-28 mb-2" src="{{ $sameUserProduct->photo }}" alt="Card image">
+                                                <img class="w-28 h-28 mb-2" src="{{ $sameUserProduct->photo }}"
+                                                    alt="Card image">
                                             @else
-                                                <img class="w-28 h-28 mb-2" src="{{ asset($sameUserProduct->photo) }}" alt="Card image">
+                                                <img class="w-28 h-28 mb-2" src="{{ asset($sameUserProduct->photo) }}"
+                                                    alt="Card image">
                                             @endif
                                         </div>
                                         <div class="ml-4 flex flex-col justify-between">
-                                            <input type="hidden" name="id" value="{{ $sameUserProduct->id }}" />
-                                            <div class="flex justify-between items-center">
-                                                <div class="text-xl font-bold">{{ $sameUserProduct->name }}</div>
-                                                <div class="text-3xl text-red-600 font-bold">{{ $sameUserProduct->price }} $</div>
-                                            </div>
-                                            <div class="flex justify-between items-center">
-                                                <div class="max-h-14 text-ellipsis overflow-hidden text-sm text-gray-500 mr-2">{{ $sameUserProduct->description }}</div>
-                                                <button class="rounded-full h-10 bg-blue-300 hover:bg-blue-400" type="submit">
-                                                    <i class="fa fa-cart-plus w-10"></i>
-                                                </button>
-                                            </div>
+                                            <input type="hidden" name="id"
+                                                value="{{ $sameUserProduct->id }}" />
+                                            <div class="text-xl font-bold">{{ $sameUserProduct->name }}</div>
+                                            <div class="text-3xl text-red-600 font-bold mb-4">
+                                                {{ $sameUserProduct->price }} $</div>
                                         </div>
                                     </div>
 
@@ -167,6 +183,7 @@
             @endif
         </div>
     </div>
+
     <!-- Handle star -->
     <script>
         const ratingStars = document.getElementById('ratingStars');

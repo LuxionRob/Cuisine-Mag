@@ -26,7 +26,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $page = $request->input('page');
-        $users = User::orderBy('created_at')->paginate(self::DEFAULT_LIMIT, ['*'], 'page', $page ?? 1);
+        $users = User::orderBy('created_at', 'desc')->paginate(self::DEFAULT_LIMIT, ['*'], 'page', $page ?? 1);
 
         return view('users.index')->with('users', $users);
     }

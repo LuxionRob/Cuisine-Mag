@@ -11,7 +11,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'checkAdmin'])->grou
     Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}/edit', [AdminOrderController::class, 'edit'])->name('orders.edit');
     Route::patch('/orders/{order}/update', [AdminOrderController::class, 'update'])->name('orders.update');
-    Route::get('/map', [AdminOrderController::class, 'map'])->name('map');
 });
 
 Route::prefix('api')->name('api.')->group(function () {
@@ -44,4 +43,5 @@ Route::prefix('dashboard')->name('dashboard.')->middleware(['auth', 'verified', 
     Route::get('/users', [DashboardController::class, 'showUsers'])->name('users');
     Route::get('/products', [DashboardController::class, 'showProducts'])->name('products');
     Route::get('/orders', [DashboardController::class, 'showOrders'])->name('orders');
+    Route::get('/map', [AdminOrderController::class, 'map'])->name('map');
 });
