@@ -36,7 +36,7 @@ class OrderController extends Controller
             });
         }
 
-        $orders = $orders->orderBy($orderCol ?? 'id', $orderDirection ?? 'desc')
+        $orders = $orders->orderBy($orderCol ?? 'created_at', $orderDirection ?? 'desc')
             ->paginate($limit ?? self::DEFAULT_LIMIT, ['*'], 'page', $page ?? 1);
 
         return response()->json($orders);

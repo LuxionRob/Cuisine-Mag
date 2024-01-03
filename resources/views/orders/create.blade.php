@@ -92,7 +92,7 @@
                                 <div class="w-2/3 h-0 mx-auto border border-slate-500 mb-4"></div>
                             @else
                                 <div class="flex items-center">
-                                    <h3 class="font-extrabold inline">{{ __('Contact') }}</h3>
+                                    <h3 class="font-extrabold inline">{{ __('Contacts') }}</h3>
                                     <span class="ml-2 hover:opacity-60 active:opacity-80">
                                         <a href="{{ route('contacts.create') }}">
                                             <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20"

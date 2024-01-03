@@ -36,7 +36,7 @@ class ContactController extends Controller
         $contact = Contact::create($contact);
         $contact->save();
 
-        return redirect(route('users.show', Auth::id()))->with('success', trans('contact.store.success'));
+        return redirect(route('users.show', Auth::user()))->with('success', trans('contact.store.success'));
     }
 
     /**

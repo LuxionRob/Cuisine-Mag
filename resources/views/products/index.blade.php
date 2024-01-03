@@ -21,7 +21,8 @@
                             <option value="2" @if (app('request')->input('category') == 2) selected @endif>
                                 {{ __('product.index.drink') }}</option>
                         </select>
-                        <button class="w-1/6 rounded bg-blue-500 p-2 text-white ml-1" type="submit">Tìm</button>
+                        <button class="w-1/6 rounded bg-blue-500 p-2 text-white ml-1"
+                            type="submit">{{ __('Find') }}</button>
                     </form>
                 </div>
 
@@ -66,10 +67,13 @@
 
                                 <div class="flex justify-between items-center px-6 mb-4">
                                     <div class="text-xl font-bold text-red-600">
-                                        {{ formatCurrency($product->price) }}</div>
-                                    <button class="rounded-full h-10 bg-blue-300 hover:bg-blue-400" type="submit">
-                                        <i class="fa fa-cart-plus w-10"></i>
-                                    </button>
+                                        {{ formatCurrency($product->price) }}
+                                    </div>
+                                    @auth
+                                        <button class="rounded-full h-10 bg-blue-300 hover:bg-blue-400" type="submit">
+                                            <i class="fa fa-cart-plus w-10"></i>
+                                        </button>
+                                    @endauth
                                 </div>
 
                             </div>

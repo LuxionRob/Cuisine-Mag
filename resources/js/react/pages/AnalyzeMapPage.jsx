@@ -166,7 +166,7 @@ export default function AnalyzeMapPage() {
                     <Polygon positions={pointsAroundStore.geometry.coordinates} />
                 )}
                 <HeatMap points={heatPoints} />
-                {/* <RoadMap roads={roads} /> */}
+                <RoadMap roads={roads} />
                 {/* {interpolateRevenue?.type ? <InterpolateRevenue data={interpolateRevenue} /> : null} */}
             </MapContainer>
             {/* <button onClick={handleClick}>click</button> */}

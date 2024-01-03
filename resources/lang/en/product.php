@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'warn' => 'Sign in to buy',
     'index' => [
         'sold' => 'Sold: ',
         'category' => 'Category',

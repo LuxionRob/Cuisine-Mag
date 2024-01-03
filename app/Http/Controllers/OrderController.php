@@ -56,6 +56,9 @@ class OrderController extends Controller
                         $orderItem->save();
                     }
                 }
+                usort($orderList, function ($a, $b) {
+                    return $a->created_at < $b->created_at;
+                });
             }
         }
 

@@ -79,7 +79,7 @@
                 </form>
             </div>
         </div>
-        @auth(Auth::user()->role !== App\Enums\UserRole::ROLE_ADMIN)
+        @if (Auth::user()->role !== App\Enums\UserRole::ROLE_ADMIN)
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 bg-white shadow-sm sm:rounded-lg mt-8 pt-4">
                 <h3 class="text-center font-semibold text-xl">{{ __('order.index.title') }}</h3>
                 @if (count($orders))
@@ -138,7 +138,7 @@
                     </x-no-item>
                 @endif
             </div>
-        @endauth
+        @endif
 
     </div>
 </x-app-layout>

@@ -45,7 +45,7 @@
                     </x-sidebar-link>
                 </div>
             </div>
-            <main class="flex-1 h-[626px] p-8 relative">
+            <main class="flex-1 h-[850px] p-8 relative">
                 <div class="max-w-full font-semibold tracking-wider">
                     @if (Session::has('fail'))
                         <div class="bg-red-500 text-slate-100 p-4 rounded-lg shadow-md mb-4 mx-auto">

@@ -126,16 +126,30 @@ class MapAnalyzeController extends Controller
         $geojs = [
             "type" => "FeatureCollection",
             "features" => $multiString->map(function ($string) {
-
-                return [
-                    "type" => "Feature",
-                    "geometry" =>
-                        $string->coordinates,
-                    "properties" => [
-                        'type' => $string->type,
-                    ],
+                $filterArray = [
+                    'footway',
+                    'pedestrian',
+                    'motorway',
+                    'motorway_link',
+                    'cycleway',
+                    'construction',
+                    'proposed',
+                    'unclassified'
                 ];
-            })
+
+                if (!in_array($string->type, $filterArray)) {
+                    return [
+                        "type" => "Feature",
+                        "geometry" =>
+                            $string->coordinates,
+                        "properties" => [
+                            'type' => $string->type,
+                        ],
+                    ];
+                }
+            })->filter(function ($value) {
+                return $value != null;
+            })->values()
         ];
         $response['geo'] = $geojs;
         $response['lastPage'] = $multiString->lastPage();

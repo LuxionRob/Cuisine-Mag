@@ -95,21 +95,21 @@ const Order = () => {
             <div className="flex flex-col">
                 <div className="bg-gray-2 grid grid-cols-3 rounded-sm dark:bg-meta-4 sm:grid-cols-6">
                     <div className="p-2.5 text-center xl:p-5">
-                        <h5 className="text-sm font-medium uppercase xsm:text-base">Mã</h5>
+                        <h5 className="text-sm font-medium uppercase xsm:text-base">#</h5>
                     </div>
                     <div className="p-2.5 text-center xl:p-5">
-                        <h5 className="text-sm font-medium uppercase xsm:text-base">Số lượng</h5>
+                        <h5 className="text-sm font-medium uppercase xsm:text-base">Quantity</h5>
                     </div>
                     <div className="p-2.5 text-center xl:p-5">
-                        <h5 className="text-sm font-medium uppercase xsm:text-base">Đơn giá</h5>
+                        <h5 className="text-sm font-medium uppercase xsm:text-base">Price</h5>
                     </div>
                     <div className="hidden p-2.5 text-center sm:block xl:p-5">
                         <h5 className="text-sm font-medium uppercase xsm:text-base">
-                            Phương thức thanh toán
+                            Payment Method{' '}
                         </h5>
                     </div>
                     <div className="hidden p-2.5 text-center sm:block xl:p-5">
-                        <h5 className="text-sm font-medium uppercase xsm:text-base">Tạo ngày</h5>
+                        <h5 className="text-sm font-medium uppercase xsm:text-base">Created at</h5>
                     </div>
                     <div className="hidden p-2.5 text-center sm:block xl:p-5">
                         <h5 className="text-sm font-medium uppercase xsm:text-base">Action</h5>
@@ -158,7 +158,7 @@ const Order = () => {
                                           className="button primary mr-1 text-center"
                                           onClick={() => handleOnClick(i.id, 'PACKAGING')}
                                       >
-                                          Xác nhận
+                                          Confirm
                                       </button>
                                   )}
                                   {['WAITING', 'PACKAGING', 'PACKAGED'].indexOf(
@@ -168,7 +168,7 @@ const Order = () => {
                                           className="button delete text-center"
                                           onClick={() => handleOnClick(i.id, 'CANCELED')}
                                       >
-                                          Huỷ đơn
+                                          Cancel
                                       </button>
                                   ) : null}
                               </div>
