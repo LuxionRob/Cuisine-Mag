@@ -1,14 +1,14 @@
-import { MapContainer, Marker, Polygon, TileLayer, Popup } from 'react-leaflet'
-import { useEffect, useState } from 'react'
-import Leaflet from 'leaflet'
+import { ControlMap, HeatMap, InterpolateRevenue, MapLegend, RoadMap } from '../components'
+import { MapContainer, Marker, Polygon, Popup, TileLayer } from 'react-leaflet'
 import { convex, interpolate } from '@turf/turf'
-
-import { ControlMap, HeatMap, MapLegend, RoadMap, InterpolateRevenue } from '../components'
 import { getDensity, getRevenueFromLocation, getRoad, getStore, getStores } from '../api/analyzeMap'
+import { useEffect, useState } from 'react'
+
+import Leaflet from 'leaflet'
 
 export default function AnalyzeMapPage() {
-    const corner1 = Leaflet.latLng(10.35, 106.33)
-    const corner2 = Leaflet.latLng(11.2, 107.05)
+    const corner1 = Leaflet.latLng(10.35, 106.13)
+    const corner2 = Leaflet.latLng(11.3, 107.05)
     const maxBounds = Leaflet.latLngBounds(corner1, corner2)
     const bounds = [
         [10.35, 106.33],
@@ -21,6 +21,7 @@ export default function AnalyzeMapPage() {
     const [heatMapShow, setHeatMapShow] = useState(true)
     const [roadShow, setRoadShow] = useState(true)
     const [shopShow, setShopShow] = useState(true)
+    const [interpolateShow, setInterpolateShow] = useState(true)
     const [roads, setRoads] = useState({
         type: 'FeatureCollection',
         features: [],
@@ -93,7 +94,6 @@ export default function AnalyzeMapPage() {
                 units: 'meters',
                 weight: 1,
             })
-            console.log(interpolatedPoly)
             setInterpolateRevenue(interpolatedPoly)
         })
     }
@@ -143,9 +143,12 @@ export default function AnalyzeMapPage() {
                 setHeatMapShow={setHeatMapShow}
                 setRoadShow={setRoadShow}
                 setShopShow={setShopShow}
+                setInterpolateShow={setInterpolateShow}
             />
             <MapLegend />
-            {interpolateRevenue?.type ? <InterpolateRevenue data={interpolateRevenue} /> : null}
+            {interpolateRevenue?.type && interpolateShow ? (
+                <InterpolateRevenue data={interpolateRevenue} />
+            ) : null}
         </MapContainer>
     )
 }
