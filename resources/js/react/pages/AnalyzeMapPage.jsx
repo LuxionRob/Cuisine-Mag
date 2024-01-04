@@ -1,10 +1,10 @@
-import { ControlMap, HeatMap, MapLegend, RoadMap } from '../components'
-import { MapContainer, Marker, Polygon, TileLayer } from 'react-leaflet'
-import { getDensity, getRevenueFromLocation, getRoad, getStore, getStores } from '../api/analyzeMap'
+import { MapContainer, Marker, Polygon, TileLayer, Popup } from 'react-leaflet'
 import { useEffect, useState } from 'react'
-
 import Leaflet from 'leaflet'
-import { convex } from '@turf/turf'
+import { convex, interpolate } from '@turf/turf'
+
+import { ControlMap, HeatMap, MapLegend, RoadMap, InterpolateRevenue } from '../components'
+import { getDensity, getRevenueFromLocation, getRoad, getStore, getStores } from '../api/analyzeMap'
 
 export default function AnalyzeMapPage() {
     const corner1 = Leaflet.latLng(10.35, 106.33)
@@ -15,6 +15,7 @@ export default function AnalyzeMapPage() {
         [11.2, 107.05],
     ]
     const [stores, setStores] = useState([])
+    const [interpolateRevenue, setInterpolateRevenue] = useState()
     const [pointsAroundStore, setPointsAroundStore] = useState({})
     const [heatPoints, setHeatPoints] = useState([])
     const [heatMapShow, setHeatMapShow] = useState(true)
@@ -36,7 +37,7 @@ export default function AnalyzeMapPage() {
     const fetchStore = async id => {
         try {
             const res = await getStore(id)
-            const polygon = convex(res.data)
+            const polygon = convex(res.data.geo)
             setPointsAroundStore(polygon)
             return res
         } catch (error) {}
@@ -88,19 +89,20 @@ export default function AnalyzeMapPage() {
         getRevenueFromLocation().then(res => {
             const interpolatedPoly = interpolate(res.data, 1000, {
                 gridType: 'square',
-                property: 'revenue',
+                property: 'rate',
                 units: 'meters',
-                weight: 5,
+                weight: 1,
             })
+            console.log(interpolatedPoly)
             setInterpolateRevenue(interpolatedPoly)
         })
     }
 
     useEffect(() => {
+        fetchInterpolate()
         fetchStores()
         fetchRoad()
         fetchDensity()
-        fetchInterpolate()
     }, [])
 
     const handleMarkerClick = e => {
@@ -143,6 +145,7 @@ export default function AnalyzeMapPage() {
                 setShopShow={setShopShow}
             />
             <MapLegend />
+            {interpolateRevenue?.type ? <InterpolateRevenue data={interpolateRevenue} /> : null}
         </MapContainer>
     )
 }

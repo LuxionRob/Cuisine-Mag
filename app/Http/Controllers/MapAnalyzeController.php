@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\OrderItem;
+use App\Models\Location;
+use App\Models\Order;
 use App\Models\PopulationDensity;
 use App\Models\Road;
 use App\Models\Store;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class MapAnalyzeController extends Controller
 {
@@ -50,9 +53,17 @@ class MapAnalyzeController extends Controller
     }
     public function showStore(Store $store)
     {
-        $multiPoints = PopulationDensity::distanceValue('coordinates', $store->location->coordinates)
-            ->distance('coordinates', $store->location->coordinates, 0.05) //Radius: ~5.95km
-            ->get();
+        $sumAndRevenue = Location::join('contacts', 'contacts.location_id', '=', 'locations.id')
+            ->join('orders', 'orders.contact_id', '=', 'contacts.id')
+            ->join('order_items', 'order_items.order_id', '=', 'orders.id')
+            ->join('products', 'products.id', '=', 'order_items.product_id')
+            ->where('store_id', '=', $store->id)->selectRaw(DB::raw('COUNT(*) as orderQuantity, SUM(products.price * order_items.quantity) as totalRevenue'))->first();
+
+        $multiPoints = Location::join('contacts', 'contacts.location_id', '=', 'locations.id')
+            ->join('orders', 'orders.contact_id', '=', 'contacts.id')
+            ->join('order_items', 'order_items.order_id', '=', 'orders.id')
+            ->join('products', 'products.id', '=', 'order_items.product_id')
+            ->where('store_id', '=', $store->id)->selectRaw(DB::raw('coordinates, ROUND(products.price * order_items.quantity, 2) as revenue'))->get();
 
         $geojs = [
             "type" => "FeatureCollection",
@@ -71,15 +82,13 @@ class MapAnalyzeController extends Controller
                             $store->location->coordinates->getLat(),
                             $store->location->coordinates->getLng(),
                             6371000
-                        ),
-                        'populationDensity' => $point->density,
+                        )
                     ],
                 ];
             })
-
         ];
 
-        return response()->json($geojs);
+        return response()->json(['geo' => $geojs, 'total' => $sumAndRevenue]);
     }
 
     public function showDensity(Request $request)
@@ -167,14 +176,29 @@ class MapAnalyzeController extends Controller
 
     public function getRevenueByOrderLocation()
     {
-        $orderItems = OrderItem::with(['order.contact.location', 'product'])->take(100)->get();
+        $orderItems = Order::join('order_items', 'order_items.order_id', '=', 'orders.id')
+            ->join('products', 'products.id', '=', 'order_items.product_id')
+            ->groupBy('contact_id')
+            ->with('contact.location')
+            ->whereDate('orders.created_at', '>', Carbon::now()->firstOfMonth())
+            ->addSelect(
+                DB::raw(
+                    ("orders.contact_id, COUNT(orders.contact_id) as orderFrequency, SUM(quantity * price) as totalRevenue")
+                )
+            )
+            ->get();
+
         $res = [
             "type" => "FeatureCollection",
             "features" => $orderItems->map(function ($item) {
                 return [
                     "type" => "Feature",
-                    "geometry" => $item->order->contact->location->coordinates,
-                    "properties" => ['revenue' => $item->quantity * $item->product->price],
+                    "geometry" => $item->contact->location->coordinates,
+                    "properties" => [
+                        'revenue' => $item->totalRevenue,
+                        'frequency' => $item->orderFrequency,
+                        'rate' => $item->orderFrequency > 1 ? 1 : 0
+                    ],
                 ];
             })
         ];
