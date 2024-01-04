@@ -1,4 +1,4 @@
-.legend {
+div[class^='legend-'] {
     padding: 6px 8px;
     font:
         14px Arial,
@@ -11,19 +11,19 @@
     line-height: 24px;
     color: #555;
 }
-.legend h4 {
+div[class^='legend-'] h4 {
     text-align: center;
     font-size: 16px;
     margin: 2px 12px 8px;
     color: #777;
 }
 
-.legend span {
+div[class^='legend-'] span {
     position: relative;
     bottom: 3px;
 }
 
-.legend i {
+div[class^='legend-'] i {
     width: 18px;
     height: 18px;
     float: left;
@@ -31,7 +31,7 @@
     opacity: 0.7;
 }
 
-.legend i.icon {
+div[class^='legend-'] i.icon {
     background-size: 18px;
     background-color: rgba(255, 255, 255, 1);
 }
@@ -51,4 +51,8 @@
     position: absolute;
     top: -18px;
     right: 0;
+}
+
+.leaflet-tile-container {
+    filter: grayscale(1);
 }

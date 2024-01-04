@@ -1,9 +1,8 @@
-import { useState, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
-import { MapDetermination } from '../components'
+import { useEffect, useState } from 'react'
+
 import { EsriProvider } from 'leaflet-geosearch'
-import 'leaflet-control-geocoder/dist/Control.Geocoder.css'
-import 'leaflet-control-geocoder/dist/Control.Geocoder.js'
+import { MapDetermination } from '../components'
+import { useTranslation } from 'react-i18next'
 
 export default function CreateStorePage() {
     const { t } = useTranslation()

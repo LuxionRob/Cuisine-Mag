@@ -8,5 +8,5 @@ export const instance = axios.create({
         'Content-Type': 'application/json',
     },
     baseURL: 'http://localhost:8000/api',
-    timeout: 50000,
+    timeout: 500000,
 })

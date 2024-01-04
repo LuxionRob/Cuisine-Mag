@@ -29,8 +29,12 @@ class MapAnalyzeController extends Controller
         return $storesWithLocation;
     }
     private function haversineGreatCircleDistance(
-        $latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371000)
-    {
+        $latitudeFrom,
+        $longitudeFrom,
+        $latitudeTo,
+        $longitudeTo,
+        $earthRadius = 6371000
+    ) {
         // convert from degrees to radians
         $latFrom = deg2rad($latitudeFrom);
         $lonFrom = deg2rad($longitudeFrom);
@@ -65,7 +69,8 @@ class MapAnalyzeController extends Controller
                             $point->coordinates->getLat(),
                             $point->coordinates->getLng(),
                             $store->location->coordinates->getLat(),
-                            $store->location->coordinates->getLng(), 6371000
+                            $store->location->coordinates->getLng(),
+                            6371000
                         ),
                         'populationDensity' => $point->density,
                     ],
@@ -82,32 +87,36 @@ class MapAnalyzeController extends Controller
         $page = $request->input('page');
         $limit = $request->input('limit');
 
-        $multiPoints = PopulationDensity::paginate($limit ?? self::DEFAULT_LIMIT, ['*'], 'page', $page ?? 1);
+        try {
+            $multiPoints = PopulationDensity::paginate($limit ?? self::DEFAULT_LIMIT, ['*'], 'page', $page ?? 1);
 
-        if ($page > $multiPoints->lastPage()) {
-            return response()->json(Response::HTTP_NOT_FOUND);
-        } else if ($page < $multiPoints->lastPage()) {
-            $response = ['nextPage' => $multiPoints->currentPage() + 1];
+            if ($page > $multiPoints->lastPage()) {
+                return response()->json(Response::HTTP_NOT_FOUND);
+            } else if ($page < $multiPoints->lastPage()) {
+                $response = ['nextPage' => $multiPoints->currentPage() + 1];
+            }
+
+            $geojs = [
+                "type" => "FeatureCollection",
+                "features" => $multiPoints->map(function ($point) {
+
+                    return [
+                        "type" => "Feature",
+                        "geometry" => $point->coordinates,
+                        "properties" => [
+                            'populationDensity' => $point->density,
+                        ],
+                    ];
+                })
+            ];
+
+            $response['geo'] = $geojs;
+            $response['lastPage'] = $multiPoints->lastPage();
+
+            return response()->json($response, Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return response()->json(["error" => $e->getMessage()], Response::HTTP_NOT_FOUND);
         }
-
-        $geojs = [
-            "type" => "FeatureCollection",
-            "features" => $multiPoints->map(function ($point) {
-
-                return [
-                    "type" => "Feature",
-                    "geometry" => $point->coordinates,
-                    "properties" => [
-                        'populationDensity' => $point->density,
-                    ],
-                ];
-            })
-        ];
-
-        $response['geo'] = $geojs;
-        $response['lastPage'] = $multiPoints->lastPage();
-
-        return response()->json($response, Response::HTTP_OK);
     }
 
     function showRoads(Request $request)
@@ -140,8 +149,7 @@ class MapAnalyzeController extends Controller
                 if (!in_array($string->type, $filterArray)) {
                     return [
                         "type" => "Feature",
-                        "geometry" =>
-                            $string->coordinates,
+                        "geometry" => $string->coordinates,
                         "properties" => [
                             'type' => $string->type,
                         ],
