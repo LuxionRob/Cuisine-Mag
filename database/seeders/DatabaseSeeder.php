@@ -22,8 +22,11 @@ class DatabaseSeeder extends Seeder
             ContactSeeder::class,
             StoreSeeder::class,
             CategoryProductSeeder::class,
+            OrderSeeder::class,
             OrderItemSeeder::class,
-            DensitySeeder::class,
+            DensitySeeder1::class,
+            DensitySeeder2::class,
+            DensitySeeder3::class,
             RoadSeeder::class,
         ]);
 

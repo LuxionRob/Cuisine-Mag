@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Contact;
 use App\Models\Order;
+use App\Models\Store;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -16,10 +17,7 @@ class OrderSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 0; $i < 50000; ++$i) {
-            Order::create([
-                'contact_id' => rand(2, 2000),
-            ]);
-        }
+        Order::factory()->count(1500)->create();
     }
+
 }
