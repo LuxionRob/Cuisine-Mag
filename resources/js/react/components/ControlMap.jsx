@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import L from 'leaflet'
 import { useMap } from 'react-leaflet'
 
-function ControlMap({ setHeatMapShow, setRoadShow, setShopShow }) {
+function ControlMap({ setHeatMapShow, setRoadShow, setShopShow, setInterpolateShow }) {
     const map = useMap()
 
     useEffect(() => {
@@ -18,11 +18,12 @@ function ControlMap({ setHeatMapShow, setRoadShow, setShopShow }) {
             <input type="checkbox" id="road" name="road" checked/>
             <label for="road"> Road</label><br>
             <input type="checkbox" id="heatmap" name="heatmap" checked/>
-            <label for="heatmap"> Heatmap</label></div>`
+            <label for="heatmap"> Heatmap</label><br>
+            <input type="checkbox" id="interpolate" name="interpolate" checked/>
+            <label for="interpolate"> Interpolate</label></div>`
 
             return div
         }
-
         controlMap.addTo(map)
 
         const road = document.getElementById('road')
@@ -58,6 +59,11 @@ function ControlMap({ setHeatMapShow, setRoadShow, setShopShow }) {
             } else {
                 heatMapLegend.style.display = 'none'
             }
+        }
+
+        const interpolate = document.getElementById('interpolate')
+        interpolate.onclick = () => {
+            setInterpolateShow(interpolate.checked)
         }
     }, [])
     return null
