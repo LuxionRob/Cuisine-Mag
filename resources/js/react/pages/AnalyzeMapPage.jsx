@@ -2,7 +2,7 @@ import { ControlMap, HeatMap, InterpolateRevenue, MapLegend, RoadMap } from '../
 import { MapContainer, Marker, Polygon, Popup, TileLayer } from 'react-leaflet'
 import { convex, interpolate } from '@turf/turf'
 import { getDensity, getRevenueFromLocation, getRoad, getStore, getStores } from '../api/analyzeMap'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 import Leaflet from 'leaflet'
 
@@ -14,7 +14,9 @@ export default function AnalyzeMapPage() {
         [10.6, 106.33],
         [11.4, 107.05],
     ]
+
     const [stores, setStores] = useState([])
+    const [store, setStore] = useState()
     const [interpolateRevenue, setInterpolateRevenue] = useState()
     const [pointsAroundStore, setPointsAroundStore] = useState({})
     const [heatPoints, setHeatPoints] = useState([])
@@ -23,6 +25,7 @@ export default function AnalyzeMapPage() {
     const [shopShow, setShopShow] = useState(true)
     const [interpolateShow, setInterpolateShow] = useState(true)
     const [roads, setRoads] = useState([])
+    const polyAroundStore = useRef()
 
     const fetchStores = async () => {
         try {
@@ -36,6 +39,7 @@ export default function AnalyzeMapPage() {
         try {
             const res = await getStore(id)
             const polygon = convex(res.data.geo)
+            setStore(res.data.total)
             setPointsAroundStore(polygon)
             return res
         } catch (error) {}
@@ -106,9 +110,15 @@ export default function AnalyzeMapPage() {
     }, [])
 
     const handleMarkerClick = e => {
+        setStore({})
         fetchStore(e.target.options.data)
     }
-
+    const handlePopupClose = e => {
+        console.log(polyAroundStore)
+        polyAroundStore.current.setStyle({
+            opacity: 0,
+        })
+    }
     return (
         <MapContainer
             bounds={bounds}
@@ -123,21 +133,40 @@ export default function AnalyzeMapPage() {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             {shopShow
-                ? stores.map(store => (
+                ? stores.map(s => (
                       <Marker
                           eventHandlers={{
                               click: handleMarkerClick,
+                              popupclose: handlePopupClose,
                           }}
-                          key={store.id}
-                          data={store.id}
-                          position={[store.y, store.x]}
-                      ></Marker>
+                          key={s.id}
+                          data={s.id}
+                          position={[s.y, s.x]}
+                      >
+                          <Popup>
+                              <strong>{s.name}</strong>
+                              <div>
+                                  <i>Order Quantity: </i>
+                                  <span className="text-xl">
+                                      {store?.orderQuantity ? store?.orderQuantity : '...'}
+                                  </span>
+                              </div>
+                              <div>
+                                  <i>Revenue: </i>
+                                  <span className="text-xl">
+                                      {store?.totalRevenue
+                                          ? Math.round(store?.totalRevenue * 100) / 100
+                                          : '...'}
+                                  </span>
+                                  $
+                              </div>
+                          </Popup>
+                      </Marker>
                   ))
                 : null}
             {pointsAroundStore?.type && (
-                <Polygon positions={pointsAroundStore.geometry.coordinates} />
+                <Polygon ref={polyAroundStore} positions={pointsAroundStore.geometry.coordinates} />
             )}
-            {roadShow ? <RoadMap roads={roads} /> : null}
             {heatMapShow ? <HeatMap points={heatPoints} /> : null}
             <ControlMap
                 setHeatMapShow={setHeatMapShow}
@@ -149,6 +178,7 @@ export default function AnalyzeMapPage() {
             {interpolateRevenue?.type && interpolateShow ? (
                 <InterpolateRevenue data={interpolateRevenue} />
             ) : null}
+            {roadShow ? <RoadMap roads={roads} /> : null}
         </MapContainer>
     )
 }
