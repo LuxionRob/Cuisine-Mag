@@ -16,13 +16,13 @@ function MapLegend() {
             const div = L.DomUtil.create('div', 'legend-road-type')
 
             const categories = [
-                'primary',
-                'secondary',
-                'tertiary',
-                'trunk',
-                'service',
-                'residential',
-                'living_street',
+                'Primary',
+                'Secondary',
+                'Tertiary',
+                'Trunk',
+                'Service',
+                'Residential',
+                'Living street',
             ]
 
             const colors = [
@@ -37,7 +37,7 @@ function MapLegend() {
 
             div.innerHTML += '<h4>Road type</h4>'
             for (let i = 0; i < categories.length; i++) {
-                div.innerHTML += `<i style="background: ${colors[i]}"></i><span>${categories[i]}</span><br>`
+                div.innerHTML += `<span><i style="background: ${colors[i]}"></i>${categories[i]}</span><br/>`
             }
 
             return div
@@ -46,7 +46,7 @@ function MapLegend() {
         roadLegend.addTo(map)
 
         // Heatmap legend
-        const heatMapLegend = L.control({ position: 'bottomright' })
+        const heatMapLegend = L.control({ position: 'topleft' })
 
         heatMapLegend.onAdd = function () {
             const div = L.DomUtil.create('div', 'legend-density')
@@ -58,6 +58,37 @@ function MapLegend() {
         }
 
         heatMapLegend.addTo(map)
+
+        //Interpolated legend
+        const interpolatedLegend = L.control({ position: 'bottomright' })
+
+        interpolatedLegend.onAdd = function () {
+            const div = L.DomUtil.create('div', 'legend-interpolated')
+
+            const rates = ['>90%', '>80%', '>70%', '>60%', '<60%']
+
+            const colors = ['#219C90', '#E9B824', '#EE9322', '#D83F31', '#EEE2DE']
+
+            div.innerHTML += '<h4>RPR</h4>'
+            for (let i = 0; i < rates.length; i++) {
+                div.innerHTML += `<i style="background: ${colors[i]}"></i><span>${rates[i]}</span><br>`
+            }
+            return div
+        }
+
+        interpolatedLegend.addTo(map)
+
+        // Shop legend
+        const shopLegend = L.control({ position: 'topleft' })
+
+        shopLegend.onAdd = function () {
+            const div = L.DomUtil.create('div', 'legend-density')
+            div.innerHTML += `<img src="http://localhost:8000/images/vendor/leaflet/dist/marker-icon.png?2b3e1faf89f94a4835397e7a43b4f77d" style="width: 18px; display: inline-block;"><span>   Shop</span><br>`
+
+            return div
+        }
+
+        shopLegend.addTo(map)
     }, [])
 
     return null
