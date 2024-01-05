@@ -16,13 +16,14 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-
+            AdminSeeder::class,
+            UserSeeder::class,
+            CategorySeeder::class,
+            StoreSeeder::class,
+            ContactSeeder::class,
+            CategoryProductSeeder::class,
             OrderSeeder::class,
             OrderItemSeeder::class,
-            DensitySeeder1::class,
-            DensitySeeder2::class,
-            DensitySeeder3::class,
-            RoadSeeder::class,
         ]);
 
         CartItem::factory(10)->create();

@@ -83,7 +83,9 @@ function MapLegend() {
 
         shopLegend.onAdd = function () {
             const div = L.DomUtil.create('div', 'legend-density')
-            div.innerHTML += `<img src="http://localhost:8000/images/vendor/leaflet/dist/marker-icon.png?2b3e1faf89f94a4835397e7a43b4f77d" style="width: 18px; display: inline-block;"><span>   Shop</span><br>`
+            div.classList.add('flex')
+            div.classList.add('items-center')
+            div.innerHTML += `<img src="http://localhost:8000/images/vendor/leaflet/dist/marker-icon.png?2b3e1faf89f94a4835397e7a43b4f77d" style="width: 18px; display: inline-block;"><div class='ml-2'>Shop</div><br>`
 
             return div
         }
