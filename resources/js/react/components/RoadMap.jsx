@@ -47,7 +47,11 @@ function RoadMap({ roads }) {
     }
 
     useEffect(() => {
-        L.geoJSON(roads, { onEachFeature: onEachFeature }).addTo(map)
+        const road = L.geoJSON(
+            { type: 'FeatureCollection', features: [...roads] },
+            { onEachFeature: onEachFeature },
+        ).addTo(map)
+        return () => map.removeLayer(road)
     }, [roads])
 
     return null
