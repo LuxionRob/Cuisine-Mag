@@ -7,12 +7,12 @@ import { useEffect, useState } from 'react'
 import Leaflet from 'leaflet'
 
 export default function AnalyzeMapPage() {
-    const corner1 = Leaflet.latLng(10.35, 106.13)
-    const corner2 = Leaflet.latLng(11.3, 107.05)
+    const corner1 = Leaflet.latLng(10.6, 106.33)
+    const corner2 = Leaflet.latLng(11.4, 107.05)
     const maxBounds = Leaflet.latLngBounds(corner1, corner2)
     const bounds = [
-        [10.35, 106.33],
-        [11.2, 107.05],
+        [10.6, 106.33],
+        [11.4, 107.05],
     ]
     const [stores, setStores] = useState([])
     const [interpolateRevenue, setInterpolateRevenue] = useState()
@@ -99,8 +99,8 @@ export default function AnalyzeMapPage() {
     }
 
     useEffect(() => {
-        fetchInterpolate()
         fetchStores()
+        fetchInterpolate()
         fetchRoad()
         fetchDensity()
     }, [])

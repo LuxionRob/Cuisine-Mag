@@ -16,27 +16,10 @@ class OrderFactory extends Factory
     public function definition()
     {
 
-        $store = Store::with('location')->inRandomOrder()->first();
-        $contact = 0;
-        $isContinue = true;
-
-        do {
-            $contact = Contact::inRandomOrder()->first()->load('location');
-
-            $distance = $this->haversineGreatCircleDistance(
-                $store->location->coordinates->getLat(),
-                $store->location->coordinates->getLng(),
-                $contact->location->coordinates->getLat(),
-                $contact->location->coordinates->getLng()
-            );
-
-            if ($distance <= 5000) {
-                $isContinue = false;
-            }
-        } while ($isContinue);
+        $contact = Contact::inRandomOrder()->first()->load('location');
 
         return [
-            'contact_id' => $contact->id
+            'contact_id' => $this->nrand(10000, 100)
         ];
     }
     private function nrand($mean, $sd)
