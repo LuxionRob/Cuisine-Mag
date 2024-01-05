@@ -48,6 +48,13 @@ function ControlMap({ setHeatMapShow, setRoadShow, setShopShow, setInterpolateSh
         const shop = document.getElementById('shop')
         shop.onclick = () => {
             setShopShow(shop.checked)
+
+            const shopLegend = document.getElementsByClassName('legend-shop')[0]
+            if (shopLegend.style.display === 'none') {
+                shopLegend.style.display = 'flex'
+            } else {
+                shopLegend.style.display = 'none'
+            }
         }
 
         const heatMap = document.getElementById('heatmap')
