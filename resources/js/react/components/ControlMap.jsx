@@ -65,6 +65,13 @@ function ControlMap({ setHeatMapShow, setRoadShow, setShopShow, setInterpolateSh
         const interpolate = document.getElementById('interpolate')
         interpolate.onclick = () => {
             setInterpolateShow(interpolate.checked)
+
+            const interpolatedLegend = document.getElementsByClassName('legend-interpolated')[0]
+            if (interpolatedLegend.style.display === 'none') {
+                interpolatedLegend.style.display = 'block'
+            } else {
+                interpolatedLegend.style.display = 'none'
+            }
         }
     }, [])
     return null
