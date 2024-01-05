@@ -22,10 +22,7 @@ export default function AnalyzeMapPage() {
     const [roadShow, setRoadShow] = useState(true)
     const [shopShow, setShopShow] = useState(true)
     const [interpolateShow, setInterpolateShow] = useState(true)
-    const [roads, setRoads] = useState({
-        type: 'FeatureCollection',
-        features: [],
-    })
+    const [roads, setRoads] = useState([])
 
     const fetchStores = async () => {
         try {
@@ -76,11 +73,14 @@ export default function AnalyzeMapPage() {
         try {
             const firstRes = await getRoad(1)
             const lastPage = firstRes.data.lastPage
-            setRoads(firstRes.data.geo)
+            setRoads(firstRes.data.geo.features)
 
             let i = 2
             while (i <= lastPage) {
-                setRoads((await getRoad(i)).data.geo)
+                const res = await getRoad(i)
+                setRoads(n => {
+                    return [...n, ...res.data.geo.features]
+                })
                 ++i
             }
         } catch (error) {}

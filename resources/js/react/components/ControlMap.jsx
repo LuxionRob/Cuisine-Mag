@@ -18,9 +18,9 @@ function ControlMap({ setHeatMapShow, setRoadShow, setShopShow, setInterpolateSh
             <input type="checkbox" id="road" name="road" checked/>
             <label for="road"> Road</label><br>
             <input type="checkbox" id="heatmap" name="heatmap" checked/>
-            <label for="heatmap"> Heatmap</label><br>
+            <label for="heatmap">Population Density</label><br>
             <input type="checkbox" id="interpolate" name="interpolate" checked/>
-            <label for="interpolate"> Interpolate</label></div>`
+            <label for="interpolate">Repeat Purchase Rate (RPR)</label></div>`
 
             return div
         }
@@ -28,13 +28,14 @@ function ControlMap({ setHeatMapShow, setRoadShow, setShopShow, setInterpolateSh
 
         const road = document.getElementById('road')
         road.onclick = () => {
-            const road = document.getElementsByTagName('g')[0]
+            setRoadShow(road.checked)
+            // const g = document.getElementsByTagName('g')[0]
 
-            if (road.style.display === 'none') {
-                road.style.display = 'block'
-            } else {
-                road.style.display = 'none'
-            }
+            // if (g.style.display === 'none') {
+            //     g.style.display = 'block'
+            // } else {
+            //     g.style.display = 'none'
+            // }
 
             const roadMapLegend = document.getElementsByClassName('legend-road-type')[0]
             if (roadMapLegend.style.display === 'none') {
