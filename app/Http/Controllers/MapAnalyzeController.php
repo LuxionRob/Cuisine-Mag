@@ -180,7 +180,6 @@ class MapAnalyzeController extends Controller
             ->join('products', 'products.id', '=', 'order_items.product_id')
             ->groupBy('contact_id')
             ->with('contact.location')
-            ->whereDate('orders.created_at', '>', Carbon::now()->firstOfMonth())
             ->addSelect(
                 DB::raw(
                     ("orders.contact_id, COUNT(orders.contact_id) as orderFrequency, SUM(quantity * price) as totalRevenue")
