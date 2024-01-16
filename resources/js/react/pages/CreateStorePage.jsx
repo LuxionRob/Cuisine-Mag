@@ -25,9 +25,8 @@ export default function CreateStorePage() {
     }
 
     useEffect(() => {
-        const queryString = window.location.href
-        const urlParams = new URLSearchParams(queryString)
-
+        const queryString = new URL(window.location.href)
+        const urlParams = new URLSearchParams(queryString.search)
         if (urlParams.size === 3) {
             fetch(
                 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=pjson&langCode=EN&location=' +

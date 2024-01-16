@@ -23,8 +23,8 @@ export default function InterpolateRevenue({ data }) {
             onEachFeature: function (feature, layer) {
                 layer.bindPopup(
                     '<span>RPR: </span><strong>' +
-                        Math.round(feature.properties.rate * 100) / 100 +
-                        '</strong>',
+                        Math.round(feature.properties.rate * 100) +
+                        '%</strong>',
                 )
             },
         }).addTo(map)

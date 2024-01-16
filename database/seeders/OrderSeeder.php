@@ -2,14 +2,32 @@
 
 namespace Database\Seeders;
 
+use App\Enums\OrderStatus;
+use App\Enums\PaymentMethod;
 use App\Models\Contact;
 use App\Models\Order;
-use App\Models\Store;
+use App\Models\Product;
+use Faker\Generator;
+use Illuminate\Container\Container;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 class OrderSeeder extends Seeder
 {
+    protected $faker;
+    public function __construct()
+    {
+        $this->faker = $this->withFaker();
+    }
+    /**
+     * Get a new Faker instance.
+     *
+     * @return \Faker\Generator
+     */
+    protected function withFaker()
+    {
+        return Container::getInstance()->make(Generator::class);
+    }
     /**
      * Run the database seeds.
      *
@@ -17,7 +35,14 @@ class OrderSeeder extends Seeder
      */
     public function run()
     {
-        Order::factory()->count(20000)->create();
+        Order::factory()->count(3000)->hasOrderItems(1, [
+            'quantity' => rand(1, 2),
+            'payment_method' => PaymentMethod::$types[rand(0, 1)],
+            'payment_status' => false,
+            'status' => OrderStatus::$types[rand(0, 4)],
+            'product_id' => Product::inRandomOrder()->first()->id,
+            'created_at' => $this->faker->dateTimeThisYear(),
+        ])->create();
     }
 
 }

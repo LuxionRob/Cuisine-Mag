@@ -67,7 +67,7 @@ function MapLegend() {
 
             const rates = ['>90%', '>80%', '>70%', '>60%', '<60%']
 
-            const colors = ['#219C90', '#E9B824', '#EE9322', '#D83F31', '#EEE2DE']
+            const colors = ['#219C90', '#A9C52F', '#FEC24A', '#FC9918', '#D83F31']
 
             div.innerHTML += '<h4>RPR</h4>'
             for (let i = 0; i < rates.length; i++) {

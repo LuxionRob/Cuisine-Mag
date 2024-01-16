@@ -1,4 +1,11 @@
-import { ControlMap, HeatMap, InterpolateRevenue, MapLegend, RoadMap } from '../components'
+import {
+    ControlMap,
+    HeatMap,
+    InterpolateRevenue,
+    MapLegend,
+    RoadMap,
+    MapContextMenu,
+} from '../components'
 import { MapContainer, Marker, Polygon, Popup, TileLayer } from 'react-leaflet'
 import { convex, interpolate } from '@turf/turf'
 import { getDensity, getRevenueFromLocation, getRoad, getStore, getStores } from '../api/analyzeMap'
@@ -25,7 +32,7 @@ export default function AnalyzeMapPage() {
     const [shopShow, setShopShow] = useState(true)
     const [interpolateShow, setInterpolateShow] = useState(true)
     const [roads, setRoads] = useState([])
-    const polyAroundStore = useRef()
+    const polyAroundStore = useRef(null)
 
     const fetchStores = async () => {
         try {
@@ -40,6 +47,7 @@ export default function AnalyzeMapPage() {
             const res = await getStore(id)
             const polygon = convex(res.data.geo)
             setStore(res.data.total)
+            if (pointsAroundStore?.type) polyAroundStore.current.setStyle({ opacity: 1 })
             setPointsAroundStore(polygon)
             return res
         } catch (error) {}
@@ -96,7 +104,7 @@ export default function AnalyzeMapPage() {
                 gridType: 'square',
                 property: 'rate',
                 units: 'meters',
-                weight: 1,
+                weight: 2,
             })
             setInterpolateRevenue(interpolatedPoly)
         })
@@ -114,10 +122,7 @@ export default function AnalyzeMapPage() {
         fetchStore(e.target.options.data)
     }
     const handlePopupClose = e => {
-        console.log(polyAroundStore)
-        polyAroundStore.current.setStyle({
-            opacity: 0,
-        })
+        if (pointsAroundStore?.type) polyAroundStore.current.setStyle({ opacity: 0 })
     }
     return (
         <MapContainer
@@ -147,15 +152,15 @@ export default function AnalyzeMapPage() {
                               <strong>{s.name}</strong>
                               <div>
                                   <i>Order Quantity: </i>
-                                  <span className="text-xl">
+                                  <span className="text-md">
                                       {store?.orderQuantity ? store?.orderQuantity : '...'}
                                   </span>
                               </div>
                               <div>
                                   <i>Revenue: </i>
-                                  <span className="text-xl">
+                                  <span className="text-md">
                                       {store?.totalRevenue
-                                          ? Math.round(store?.totalRevenue * 100) / 100
+                                          ? Math.round(store?.totalRevenue * 100)
                                           : '...'}
                                   </span>
                                   $
@@ -179,6 +184,7 @@ export default function AnalyzeMapPage() {
                 <InterpolateRevenue data={interpolateRevenue} />
             ) : null}
             {roadShow ? <RoadMap roads={roads} /> : null}
+            <MapContextMenu />
         </MapContainer>
     )
 }

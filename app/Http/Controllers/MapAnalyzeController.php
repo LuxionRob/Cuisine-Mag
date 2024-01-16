@@ -180,6 +180,7 @@ class MapAnalyzeController extends Controller
             ->join('products', 'products.id', '=', 'order_items.product_id')
             ->groupBy('contact_id')
             ->with('contact.location')
+            ->whereDate('orders.created_at', '>', Carbon::now()->firstOfMonth())
             ->addSelect(
                 DB::raw(
                     ("orders.contact_id, COUNT(orders.contact_id) as orderFrequency, SUM(quantity * price) as totalRevenue")
@@ -196,7 +197,7 @@ class MapAnalyzeController extends Controller
                     "properties" => [
                         'revenue' => $item->totalRevenue,
                         'frequency' => $item->orderFrequency,
-                        'rate' => $item->orderFrequency > 1 ? 1 : 0
+                        'rate' => $item->orderFrequency > 1 && $item->orderFrequency < 4 ? 0.6 : ($item->orderFrequency > 4 ? 1 : 0)
                     ],
                 ];
             })
